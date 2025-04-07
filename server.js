@@ -8,7 +8,7 @@ const pptx2json = require('pptx2json');
 const sharp = require('sharp');
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 8443;
 
 // 데이터베이스 설정
 const db = new sqlite3.Database('courses.db', (err) => {
@@ -185,4 +185,5 @@ app.post('/api/courses', upload.single('ppt'), async (req, res) => {
 // 서버 시작
 app.listen(port, () => {
     console.log(`서버가 http://localhost:${port} 에서 실행 중입니다.`);
+    console.log('데이터베이스 연결 성공');
 }); 
