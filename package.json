@@ -7,6 +7,12 @@
     "start": "node server.js"
   },
   "dependencies": {
-    "express": "^4.18.2"
+    "body-parser": "^1.20.2",
+    "ejs": "^3.1.9",
+    "express": "^4.18.2",
+    "multer": "^1.4.5-lts.2",
+    "pptx2json": "^0.0.10",
+    "sharp": "^0.34.0",
+    "sqlite3": "^5.1.7"
   }
-} 
+}
