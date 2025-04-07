@@ -818,32 +818,7 @@
         <i class="fas fa-moon"></i>
     </div>
 
-    <nav class="navbar navbar-expand-lg">
-        <div class="container">
-            <a class="navbar-brand" href="/">
-                <i class="fas fa-graduation-cap me-2"></i>강의 플랫폼
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="/">홈</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/courses">강의</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/categories">카테고리</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/about">소개</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+    <%- include('partials/navbar') %>
 
     <div class="hero-section">
         <div class="container">
@@ -867,71 +842,105 @@
         <div class="container">
             <h2 class="section-title">추천 강의</h2>
             <div class="row">
-                <div class="col-md-6">
-                    <div class="featured-card">
-                        <img src="/1.png" alt="Git & GitHub 강의">
-                        <div class="featured-overlay">
-                            <span class="category-badge">git & github 기초강의</span>
-                            <h3>git, github에 대한 모든것</h3>
-                            <p>git과 github에 기초를 이해하기 적합합니다!</p>
-                            <a href="/presentation/1" class="btn btn-light">
-                                <i class="fas fa-play-circle me-1"></i>강의 보기
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="row">
-                        <div class="col-md-6 mb-4">
-                            <div class="featured-card" style="height: 190px;">
-                                <img src="/1.png" alt="Git & GitHub 강의">
-                                <div class="featured-overlay">
-                                    <span class="category-badge">git & github 기초강의</span>
-                                    <h3>git, github에 대한 모든것</h3>
-                                    <a href="/presentation/1" class="btn btn-sm btn-light">
-                                        <i class="fas fa-play-circle me-1"></i>강의 보기
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6 mb-4">
-                            <div class="featured-card" style="height: 190px;">
-                                <img src="/1.png" alt="Git & GitHub 강의">
-                                <div class="featured-overlay">
-                                    <span class="category-badge">git & github 기초강의</span>
-                                    <h3>git, github에 대한 모든것</h3>
-                                    <a href="/presentation/1" class="btn btn-sm btn-light">
-                                        <i class="fas fa-play-circle me-1"></i>강의 보기
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="featured-card" style="height: 190px;">
-                                <img src="/1.png" alt="Git & GitHub 강의">
-                                <div class="featured-overlay">
-                                    <span class="category-badge">git & github 기초강의</span>
-                                    <h3>git, github에 대한 모든것</h3>
-                                    <a href="/presentation/1" class="btn btn-sm btn-light">
-                                        <i class="fas fa-play-circle me-1"></i>강의 보기
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="featured-card" style="height: 190px;">
-                                <img src="/1.png" alt="Git & GitHub 강의">
-                                <div class="featured-overlay">
-                                    <span class="category-badge">git & github 기초강의</span>
-                                    <h3>git, github에 대한 모든것</h3>
-                                    <a href="/presentation/1" class="btn btn-sm btn-light">
-                                        <i class="fas fa-play-circle me-1"></i>강의 보기
-                                    </a>
-                                </div>
+                <% if (courses && courses.length > 0) { %>
+                    <div class="col-md-6">
+                        <div class="featured-card">
+                            <img src="<%= courses[0].thumbnail || '/1.png' %>" alt="<%= courses[0].title %>">
+                            <div class="featured-overlay">
+                                <span class="category-badge"><%= courses[0].category %></span>
+                                <h3><%= courses[0].title %></h3>
+                                <p><%= courses[0].description %></p>
+                                <a href="/presentation/<%= courses[0].id %>" class="btn btn-light">
+                                    <i class="fas fa-play-circle me-1"></i>강의 보기
+                                </a>
                             </div>
                         </div>
                     </div>
-                </div>
+                    <div class="col-md-6">
+                        <div class="row">
+                            <% for(let i = 1; i < Math.min(5, courses.length); i++) { %>
+                                <div class="col-md-6 mb-4">
+                                    <div class="featured-card" style="height: 190px;">
+                                        <img src="<%= courses[i].thumbnail || '/1.png' %>" alt="<%= courses[i].title %>">
+                                        <div class="featured-overlay">
+                                            <span class="category-badge"><%= courses[i].category %></span>
+                                            <h3><%= courses[i].title %></h3>
+                                            <a href="/presentation/<%= courses[i].id %>" class="btn btn-sm btn-light">
+                                                <i class="fas fa-play-circle me-1"></i>강의 보기
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            <% } %>
+                        </div>
+                    </div>
+                <% } else { %>
+                    <div class="col-md-6">
+                        <div class="featured-card">
+                            <img src="/1.png" alt="Git & GitHub 강의">
+                            <div class="featured-overlay">
+                                <span class="category-badge">git & github 기초강의</span>
+                                <h3>git, github에 대한 모든것</h3>
+                                <p>git과 github에 기초를 이해하기 적합합니다!</p>
+                                <a href="/presentation/1" class="btn btn-light">
+                                    <i class="fas fa-play-circle me-1"></i>강의 보기
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="row">
+                            <div class="col-md-6 mb-4">
+                                <div class="featured-card" style="height: 190px;">
+                                    <img src="/1.png" alt="Git & GitHub 강의">
+                                    <div class="featured-overlay">
+                                        <span class="category-badge">git & github 기초강의</span>
+                                        <h3>git, github에 대한 모든것</h3>
+                                        <a href="/presentation/1" class="btn btn-sm btn-light">
+                                            <i class="fas fa-play-circle me-1"></i>강의 보기
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-4">
+                                <div class="featured-card" style="height: 190px;">
+                                    <img src="/1.png" alt="Git & GitHub 강의">
+                                    <div class="featured-overlay">
+                                        <span class="category-badge">git & github 기초강의</span>
+                                        <h3>git, github에 대한 모든것</h3>
+                                        <a href="/presentation/1" class="btn btn-sm btn-light">
+                                            <i class="fas fa-play-circle me-1"></i>강의 보기
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="featured-card" style="height: 190px;">
+                                    <img src="/1.png" alt="Git & GitHub 강의">
+                                    <div class="featured-overlay">
+                                        <span class="category-badge">git & github 기초강의</span>
+                                        <h3>git, github에 대한 모든것</h3>
+                                        <a href="/presentation/1" class="btn btn-sm btn-light">
+                                            <i class="fas fa-play-circle me-1"></i>강의 보기
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="featured-card" style="height: 190px;">
+                                    <img src="/1.png" alt="Git & GitHub 강의">
+                                    <div class="featured-overlay">
+                                        <span class="category-badge">git & github 기초강의</span>
+                                        <h3>git, github에 대한 모든것</h3>
+                                        <a href="/presentation/1" class="btn btn-sm btn-light">
+                                            <i class="fas fa-play-circle me-1"></i>강의 보기
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <% } %>
             </div>
         </div>
     </section>

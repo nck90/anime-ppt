@@ -12,6 +12,31 @@ services:
       - ./public/thumbnails:/app/public/thumbnails
       - ./courses.db:/app/courses.db
     restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 1G
+        reservations:
+          cpus: '0.5'
+          memory: 512M
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8443/"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 30s
+
+networks:
+  app-network:
+    driver: bridge
 
 volumes:
   mysql_data: 

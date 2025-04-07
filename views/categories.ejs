@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="ko" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>카테고리 - 강의 플랫폼</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Light Theme */
+            --primary-color: #3182f6;
+            --primary-dark: #1b64da;
+            --secondary-color: #1e293b;
+            --accent-color: #f43f5e;
+            --background: #f8fafc;
+            --surface: #ffffff;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --border-color: #e2e8f0;
+            --card-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+            --card-shadow-hover: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+            --neumorphism-light: 8px 8px 16px #d1d9e6, -8px -8px 16px #ffffff;
+            --neumorphism-dark: 8px 8px 16px #0a0f1a, -8px -8px 16px #1a2234;
+            --transition-speed: 0.3s;
+            --card-radius: 16px;
+            --button-radius: 12px;
+        }
+
+        [data-theme="dark"] {
+            --primary-color: #60a5fa;
+            --primary-dark: #3b82f6;
+            --secondary-color: #f1f5f9;
+            --accent-color: #fb7185;
+            --background: #0f172a;
+            --surface: #1e293b;
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --border-color: #334155;
+            --card-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -4px rgba(0, 0, 0, 0.3);
+            --card-shadow-hover: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 10px -6px rgba(0, 0, 0, 0.3);
+            --neumorphism-light: 8px 8px 16px #0a0f1a, -8px -8px 16px #1a2234;
+            --neumorphism-dark: 8px 8px 16px #0a0f1a, -8px -8px 16px #1a2234;
+        }
+        
+        body {
+            background-color: var(--background);
+            font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            color: var(--text-primary);
+            line-height: 1.6;
+            transition: background-color var(--transition-speed);
+            overflow-x: hidden;
+        }
+
+        /* Theme Toggle */
+        .theme-toggle {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: var(--surface);
+            box-shadow: var(--neumorphism-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 1000;
+            transition: all var(--transition-speed);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        [data-theme="dark"] .theme-toggle {
+            box-shadow: var(--neumorphism-dark);
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.1) translateY(-5px);
+            box-shadow: var(--card-shadow-hover);
+        }
+
+        .theme-toggle i {
+            font-size: 1.4rem;
+            color: var(--primary-color);
+            transition: transform 0.5s ease;
+        }
+
+        .theme-toggle:hover i {
+            transform: rotate(180deg);
+        }
+
+        /* Section Title */
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 2.5rem;
+            color: var(--text-primary);
+            position: relative;
+            display: inline-block;
+            letter-spacing: -1px;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 60px;
+            height: 4px;
+            background: var(--primary-color);
+            border-radius: 2px;
+            transition: width 0.3s ease;
+        }
+
+        .section-title:hover::after {
+            width: 100%;
+        }
+
+        /* Category Cards */
+        .category-card {
+            border: none;
+            border-radius: var(--card-radius);
+            background: var(--surface);
+            box-shadow: var(--card-shadow);
+            transition: all var(--transition-speed);
+            margin-bottom: 30px;
+            overflow: hidden;
+            height: 100%;
+            transform-style: preserve-3d;
+            perspective: 1000px;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .category-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(49, 130, 246, 0.1), transparent);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .category-card:hover {
+            transform: translateY(-10px) rotateX(5deg);
+            box-shadow: var(--card-shadow-hover);
+        }
+
+        .category-card:hover::before {
+            opacity: 1;
+        }
+
+        .category-icon {
+            font-size: 3rem;
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            transition: transform var(--transition-speed);
+            position: relative;
+            display: inline-block;
+        }
+
+        .category-icon::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            width: 0;
+            height: 3px;
+            background: var(--primary-color);
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+
+        .category-card:hover .category-icon {
+            transform: scale(1.2) translateZ(20px);
+        }
+
+        .category-card:hover .category-icon::after {
+            width: 50%;
+        }
+
+        .category-title {
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+            transition: color 0.3s ease;
+        }
+
+        .category-card:hover .category-title {
+            color: var(--primary-color);
+        }
+
+        .category-description {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+            transition: transform 0.3s ease;
+        }
+
+        .category-card:hover .category-description {
+            transform: translateY(-3px);
+        }
+
+        .category-count {
+            display: inline-block;
+            background: var(--primary-color);
+            color: white;
+            padding: 0.4rem 1rem;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            box-shadow: 0 2px 8px rgba(49, 130, 246, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .category-card:hover .category-count {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(49, 130, 246, 0.4);
+        }
+
+        /* Course Cards */
+        .course-card {
+            border: none;
+            border-radius: var(--card-radius);
+            background: var(--surface);
+            box-shadow: var(--card-shadow);
+            transition: all var(--transition-speed);
+            margin-bottom: 30px;
+            overflow: hidden;
+            height: 100%;
+            transform-style: preserve-3d;
+            perspective: 1000px;
+            position: relative;
+        }
+
+        .course-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(49, 130, 246, 0.1), transparent);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .course-card:hover {
+            transform: translateY(-10px) rotateX(5deg);
+            box-shadow: var(--card-shadow-hover);
+        }
+
+        .course-card:hover::before {
+            opacity: 1;
+        }
+
+        .course-card .card-img-top {
+            height: 200px;
+            object-fit: cover;
+            border-top-left-radius: var(--card-radius);
+            border-top-right-radius: var(--card-radius);
+            transition: transform var(--transition-speed);
+        }
+
+        .course-card:hover .card-img-top {
+            transform: scale(1.05);
+        }
+
+        .course-card .card-body {
+            padding: 1.5rem;
+        }
+
+        .course-card .card-title {
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            font-size: 1.25rem;
+            line-height: 1.4;
+            color: var(--text-primary);
+            transition: color 0.3s ease;
+        }
+
+        .course-card:hover .card-title {
+            color: var(--primary-color);
+        }
+
+        .course-card .card-text {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .category-badge {
+            background: var(--primary-color);
+            color: white;
+            padding: 0.4rem 1rem;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 0.75rem;
+            box-shadow: 0 2px 8px rgba(49, 130, 246, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .category-badge:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(49, 130, 246, 0.4);
+        }
+
+        .card-footer {
+            background-color: transparent;
+            border-top: 1px solid var(--border-color);
+            padding: 1rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-footer .btn {
+            border-radius: var(--button-radius);
+            padding: 0.6rem 1.2rem;
+            font-weight: 600;
+            transition: all var(--transition-speed);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-footer .btn-primary {
+            background: var(--primary-color);
+            border: none;
+            color: white;
+            box-shadow: 0 4px 12px rgba(49, 130, 246, 0.3);
+        }
+
+        .card-footer .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.6s ease;
+        }
+
+        .card-footer .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(49, 130, 246, 0.4);
+        }
+
+        .card-footer .btn-primary:hover::before {
+            transform: translateX(100%);
+        }
+
+        .card-footer .btn-primary i {
+            transition: transform 0.3s ease;
+        }
+
+        .card-footer .btn-primary:hover i {
+            transform: translateX(3px);
+        }
+
+        .card-meta {
+            display: flex;
+            align-items: center;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            transition: color 0.3s ease;
+        }
+
+        .card-meta i {
+            margin-right: 0.5rem;
+            color: var(--primary-color);
+            transition: transform 0.3s ease;
+        }
+
+        .course-card:hover .card-meta {
+            color: var(--primary-color);
+        }
+
+        .course-card:hover .card-meta i {
+            transform: rotate(15deg);
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--surface);
+            color: var(--text-primary);
+            padding: 5rem 0 2rem;
+            margin-top: 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at bottom left, rgba(49, 130, 246, 0.05), transparent 70%);
+            z-index: 0;
+        }
+
+        .footer h5 {
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+            position: relative;
+            z-index: 1;
+            display: inline-block;
+        }
+
+        .footer h5::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 3px;
+            background: var(--primary-color);
+            transition: width 0.3s ease;
+        }
+
+        .footer h5:hover::after {
+            width: 100%;
+        }
+
+        .footer-links {
+            list-style: none;
+            padding: 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.75rem;
+            transition: transform 0.3s ease;
+        }
+
+        .footer-links li:hover {
+            transform: translateX(5px);
+        }
+
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color var(--transition-speed);
+            display: inline-block;
+            position: relative;
+        }
+
+        .footer-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--primary-color);
+            transition: width var(--transition-speed);
+        }
+
+        .footer-links a:hover {
+            color: var(--primary-color);
+        }
+
+        .footer-links a:hover::after {
+            width: 100%;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid var(--border-color);
+            padding-top: 2rem;
+            margin-top: 3rem;
+            text-align: center;
+            color: var(--text-secondary);
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            .section-title {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="theme-toggle" onclick="toggleTheme()">
+        <i class="fas fa-moon"></i>
+    </div>
+
+    <%- include('partials/navbar') %>
+
+    <div class="container py-5">
+        <h1 class="section-title">카테고리</h1>
+        
+        <div class="row">
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="category-card text-center p-4">
+                    <div class="category-icon">
+                        <i class="fas fa-laptop-code"></i>
+                    </div>
+                    <h3 class="category-title">웹 개발</h3>
+                    <p class="category-description">HTML, CSS, JavaScript 등 웹 개발에 필요한 모든 기술을 배우세요.</p>
+                    <span class="category-count">12 강의</span>
+                </div>
+            </div>
+            
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="category-card text-center p-4">
+                    <div class="category-icon">
+                        <i class="fas fa-palette"></i>
+                    </div>
+                    <h3 class="category-title">디자인</h3>
+                    <p class="category-description">UI/UX, 그래픽 디자인 등 디자인 관련 강의를 제공합니다.</p>
+                    <span class="category-count">8 강의</span>
+                </div>
+            </div>
+            
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="category-card text-center p-4">
+                    <div class="category-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3 class="category-title">마케팅</h3>
+                    <p class="category-description">디지털 마케팅, SEO 등 마케팅 관련 강의를 제공합니다.</p>
+                    <span class="category-count">6 강의</span>
+                </div>
+            </div>
+            
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="category-card text-center p-4">
+                    <div class="category-icon">
+                        <i class="fas fa-code-branch"></i>
+                    </div>
+                    <h3 class="category-title">버전 관리</h3>
+                    <p class="category-description">Git, GitHub 등 버전 관리 도구에 대한 강의를 제공합니다.</p>
+                    <span class="category-count">4 강의</span>
+                </div>
+            </div>
+            
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="category-card text-center p-4">
+                    <div class="category-icon">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <h3 class="category-title">모바일 개발</h3>
+                    <p class="category-description">iOS, Android 등 모바일 앱 개발 강의를 제공합니다.</p>
+                    <span class="category-count">5 강의</span>
+                </div>
+            </div>
+            
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="category-card text-center p-4">
+                    <div class="category-icon">
+                        <i class="fas fa-database"></i>
+                    </div>
+                    <h3 class="category-title">데이터베이스</h3>
+                    <p class="category-description">SQL, NoSQL 등 데이터베이스 관련 강의를 제공합니다.</p>
+                    <span class="category-count">7 강의</span>
+                </div>
+            </div>
+        </div>
+        
+        <h2 class="section-title mt-5">카테고리별 강의</h2>
+        
+        <div class="row">
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="card course-card">
+                    <img src="/1.png" class="card-img-top" alt="Git & GitHub 강의">
+                    <div class="card-body">
+                        <span class="category-badge">버전 관리</span>
+                        <h5 class="card-title">git, github에 대한 모든것</h5>
+                        <p class="card-text">git과 github에 기초를 이해하기 적합합니다!</p>
+                    </div>
+                    <div class="card-footer">
+                        <div class="card-meta">
+                            <i class="far fa-clock"></i> 2시간
+                        </div>
+                        <a href="/presentation/1" class="btn btn-primary">
+                            <i class="fas fa-play-circle me-1"></i>강의 보기
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="card course-card">
+                    <img src="/1.png" class="card-img-top" alt="웹 개발 기초">
+                    <div class="card-body">
+                        <span class="category-badge">웹 개발</span>
+                        <h5 class="card-title">웹 개발 기초</h5>
+                        <p class="card-text">HTML, CSS, JavaScript의 기초를 배우는 강의입니다.</p>
+                    </div>
+                    <div class="card-footer">
+                        <div class="card-meta">
+                            <i class="far fa-clock"></i> 3시간
+                        </div>
+                        <a href="/presentation/2" class="btn btn-primary">
+                            <i class="fas fa-play-circle me-1"></i>강의 보기
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="card course-card">
+                    <img src="/1.png" class="card-img-top" alt="UI/UX 디자인">
+                    <div class="card-body">
+                        <span class="category-badge">디자인</span>
+                        <h5 class="card-title">UI/UX 디자인</h5>
+                        <p class="card-text">사용자 경험을 개선하는 UI/UX 디자인 기초 강의입니다.</p>
+                    </div>
+                    <div class="card-footer">
+                        <div class="card-meta">
+                            <i class="far fa-clock"></i> 2.5시간
+                        </div>
+                        <a href="/presentation/3" class="btn btn-primary">
+                            <i class="fas fa-play-circle me-1"></i>강의 보기
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 mb-4 mb-lg-0">
+                    <h5>강의 플랫폼</h5>
+                    <p>최고의 강의를 제공하는 온라인 학습 플랫폼입니다. 다양한 분야의 전문가들이 제공하는 양질의 강의로 지식을 쌓고 성장하세요.</p>
+                </div>
+                <div class="col-lg-2 col-md-4 mb-4 mb-md-0">
+                    <h5>바로가기</h5>
+                    <ul class="footer-links">
+                        <li><a href="/">홈</a></li>
+                        <li><a href="/courses">강의</a></li>
+                        <li><a href="/categories">카테고리</a></li>
+                        <li><a href="/about">소개</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 col-md-4 mb-4 mb-md-0">
+                    <h5>카테고리</h5>
+                    <ul class="footer-links">
+                        <li><a href="/category/web">웹 개발</a></li>
+                        <li><a href="/category/design">디자인</a></li>
+                        <li><a href="/category/marketing">마케팅</a></li>
+                        <li><a href="/category/git">버전 관리</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-4 col-md-4">
+                    <h5>연락처</h5>
+                    <ul class="footer-links">
+                        <li><i class="fas fa-envelope me-2"></i> s2460@e-mirim.hs.kr</li>
+                        <li><i class="fas fa-phone me-2"></i> 010-9145-5226</li>
+                        <li><i class="fas fa-map-marker-alt me-2"></i> 미림마이스터고</li>
+                    </ul>
+                    <div class="mt-3">
+                        <a href="#" class="text-white me-3"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="text-white me-3"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-white me-3"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-white"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 강의 플랫폼. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // 다크모드 토글
+        function toggleTheme() {
+            const html = document.documentElement;
+            const themeToggle = document.querySelector('.theme-toggle i');
+            
+            if (html.getAttribute('data-theme') === 'light') {
+                html.setAttribute('data-theme', 'dark');
+                themeToggle.classList.remove('fa-moon');
+                themeToggle.classList.add('fa-sun');
+            } else {
+                html.setAttribute('data-theme', 'light');
+                themeToggle.classList.remove('fa-sun');
+                themeToggle.classList.add('fa-moon');
+            }
+        }
+
+        // 스크롤 애니메이션
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.course-card, .category-card');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, { threshold: 0.1 });
+            
+            cards.forEach(card => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                observer.observe(card);
+            });
+
+            // 3D 효과
+            document.querySelectorAll('.course-card, .category-card').forEach(card => {
+                card.addEventListener('mousemove', function(e) {
+                    const rect = this.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    
+                    const centerX = rect.width / 2;
+                    const centerY = rect.height / 2;
+                    
+                    const rotateX = (y - centerY) / 20;
+                    const rotateY = (centerX - x) / 20;
+                    
+                    this.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(10px)`;
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(-10px)';
+                });
+            });
+        });
+    </script>
+</body>
+</html> 

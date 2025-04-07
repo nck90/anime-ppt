@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="ko" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>관리자 페이지 - 강의 플랫폼</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Light Theme */
+            --primary-color: #3182f6;
+            --primary-dark: #1b64da;
+            --secondary-color: #1e293b;
+            --accent-color: #f43f5e;
+            --background: #f8fafc;
+            --surface: #ffffff;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --border-color: #e2e8f0;
+            --card-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+            --card-shadow-hover: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+            --neumorphism-light: 8px 8px 16px #d1d9e6, -8px -8px 16px #ffffff;
+            --neumorphism-dark: 8px 8px 16px #0a0f1a, -8px -8px 16px #1a2234;
+            --transition-speed: 0.3s;
+            --card-radius: 16px;
+            --button-radius: 12px;
+        }
+
+        [data-theme="dark"] {
+            --primary-color: #60a5fa;
+            --primary-dark: #3b82f6;
+            --secondary-color: #f1f5f9;
+            --accent-color: #fb7185;
+            --background: #0f172a;
+            --surface: #1e293b;
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --border-color: #334155;
+            --card-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -4px rgba(0, 0, 0, 0.3);
+            --card-shadow-hover: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 10px -6px rgba(0, 0, 0, 0.3);
+            --neumorphism-light: 8px 8px 16px #0a0f1a, -8px -8px 16px #1a2234;
+            --neumorphism-dark: 8px 8px 16px #0a0f1a, -8px -8px 16px #1a2234;
+        }
+        
+        body {
+            background-color: var(--background);
+            font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            color: var(--text-primary);
+            line-height: 1.6;
+            transition: background-color var(--transition-speed);
+            overflow-x: hidden;
+        }
+
+        /* Theme Toggle */
+        .theme-toggle {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: var(--surface);
+            box-shadow: var(--neumorphism-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 1000;
+            transition: all var(--transition-speed);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        [data-theme="dark"] .theme-toggle {
+            box-shadow: var(--neumorphism-dark);
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.1) translateY(-5px);
+            box-shadow: var(--card-shadow-hover);
+        }
+
+        .theme-toggle i {
+            font-size: 1.4rem;
+            color: var(--primary-color);
+            transition: transform 0.5s ease;
+        }
+
+        .theme-toggle:hover i {
+            transform: rotate(180deg);
+        }
+
+        /* Admin Dashboard */
+        .admin-header {
+            background: var(--surface);
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+            box-shadow: var(--card-shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .admin-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at top right, rgba(49, 130, 246, 0.05), transparent 70%);
+            z-index: 0;
+        }
+
+        .admin-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+            position: relative;
+            z-index: 1;
+        }
+
+        .admin-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            position: relative;
+            z-index: 1;
+        }
+
+        .admin-card {
+            background: var(--surface);
+            border-radius: var(--card-radius);
+            box-shadow: var(--card-shadow);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            transition: all var(--transition-speed);
+        }
+
+        .admin-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--card-shadow-hover);
+        }
+
+        .admin-card-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+        }
+
+        .admin-card-title i {
+            margin-right: 0.5rem;
+            color: var(--primary-color);
+        }
+
+        .admin-stats {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 1rem;
+            background: var(--background);
+            border-radius: var(--button-radius);
+            flex: 1;
+            margin: 0 0.5rem;
+        }
+
+        .stat-item:first-child {
+            margin-left: 0;
+        }
+
+        .stat-item:last-child {
+            margin-right: 0;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .table {
+            color: var(--text-primary);
+        }
+
+        .table thead th {
+            background: var(--background);
+            color: var(--text-secondary);
+            font-weight: 600;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .table tbody tr {
+            transition: all var(--transition-speed);
+        }
+
+        .table tbody tr:hover {
+            background: var(--background);
+        }
+
+        .table td {
+            vertical-align: middle;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .status-badge {
+            padding: 0.25rem 0.5rem;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .status-pending {
+            background: rgba(234, 179, 8, 0.2);
+            color: #ca8a04;
+        }
+
+        .status-approved {
+            background: rgba(34, 197, 94, 0.2);
+            color: #16a34a;
+        }
+
+        .status-rejected {
+            background: rgba(239, 68, 68, 0.2);
+            color: #dc2626;
+        }
+
+        .action-btn {
+            padding: 0.25rem 0.5rem;
+            border-radius: var(--button-radius);
+            font-size: 0.9rem;
+            margin-right: 0.5rem;
+            transition: all var(--transition-speed);
+        }
+
+        .action-btn:last-child {
+            margin-right: 0;
+        }
+
+        .action-btn i {
+            margin-right: 0.25rem;
+        }
+
+        .btn-approve {
+            background: rgba(34, 197, 94, 0.2);
+            color: #16a34a;
+            border: none;
+        }
+
+        .btn-approve:hover {
+            background: rgba(34, 197, 94, 0.3);
+            color: #16a34a;
+        }
+
+        .btn-reject {
+            background: rgba(239, 68, 68, 0.2);
+            color: #dc2626;
+            border: none;
+        }
+
+        .btn-reject:hover {
+            background: rgba(239, 68, 68, 0.3);
+            color: #dc2626;
+        }
+
+        .btn-view {
+            background: rgba(49, 130, 246, 0.2);
+            color: var(--primary-color);
+            border: none;
+        }
+
+        .btn-view:hover {
+            background: rgba(49, 130, 246, 0.3);
+            color: var(--primary-color);
+        }
+
+        .btn-edit {
+            background: rgba(234, 179, 8, 0.2);
+            color: #ca8a04;
+            border: none;
+        }
+
+        .btn-edit:hover {
+            background: rgba(234, 179, 8, 0.3);
+            color: #ca8a04;
+        }
+
+        .btn-delete {
+            background: rgba(239, 68, 68, 0.2);
+            color: #dc2626;
+            border: none;
+        }
+
+        .btn-delete:hover {
+            background: rgba(239, 68, 68, 0.3);
+            color: #dc2626;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: var(--text-secondary);
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: var(--border-color);
+        }
+
+        .empty-state p {
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .empty-state .btn {
+            padding: 0.5rem 1.5rem;
+            border-radius: var(--button-radius);
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            transition: all var(--transition-speed);
+        }
+
+        .empty-state .btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-3px);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .admin-title {
+                font-size: 2rem;
+            }
+            
+            .admin-stats {
+                flex-direction: column;
+            }
+            
+            .stat-item {
+                margin: 0.5rem 0;
+            }
+            
+            .table-responsive {
+                overflow-x: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="theme-toggle" onclick="toggleTheme()">
+        <i class="fas fa-moon"></i>
+    </div>
+
+    <%- include('partials/navbar') %>
+
+    <header class="admin-header">
+        <div class="container">
+            <h1 class="admin-title">관리자 대시보드</h1>
+            <p class="admin-subtitle">강의 요청 및 강의 자료를 관리하세요</p>
+        </div>
+    </header>
+
+    <div class="container mb-5">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="admin-card">
+                    <h2 class="admin-card-title">
+                        <i class="fas fa-chart-pie"></i> 통계
+                    </h2>
+                    <div class="admin-stats">
+                        <div class="stat-item">
+                            <div class="stat-value"><%= courses ? courses.length : 0 %></div>
+                            <div class="stat-label">총 강의</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value"><%= courseRequests ? courseRequests.length : 0 %></div>
+                            <div class="stat-label">강의 요청</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value"><%= courseRequests ? courseRequests.filter(req => req.status === 'pending').length : 0 %></div>
+                            <div class="stat-label">대기 중</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="admin-card">
+                    <h2 class="admin-card-title">
+                        <i class="fas fa-bell"></i> 최근 알림
+                    </h2>
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>날짜</th>
+                                    <th>내용</th>
+                                    <th>상태</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% if (courseRequests.length > 0) { %>
+                                    <% courseRequests.slice(0, 5).forEach(function(request) { %>
+                                        <tr>
+                                            <td><%= new Date(request.created_at).toLocaleDateString() %></td>
+                                            <td><%= request.title %></td>
+                                            <td>
+                                                <span class="status-badge status-<%= request.status %>">
+                                                    <%= request.status === 'pending' ? '대기 중' : 
+                                                       request.status === 'approved' ? '승인됨' : '거부됨' %>
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    <% }); %>
+                                <% } else { %>
+                                    <tr>
+                                        <td colspan="3" class="text-center">알림이 없습니다</td>
+                                    </tr>
+                                <% } %>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="admin-card">
+                    <h2 class="admin-card-title">
+                        <i class="fas fa-clipboard-list"></i> 강의 요청 관리
+                    </h2>
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>제목</th>
+                                    <th>카테고리</th>
+                                    <th>요청자</th>
+                                    <th>이메일</th>
+                                    <th>상태</th>
+                                    <th>요청일</th>
+                                    <th>작업</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% if (courseRequests.length > 0) { %>
+                                    <% courseRequests.forEach(function(request) { %>
+                                        <tr>
+                                            <td><%= request.id %></td>
+                                            <td><%= request.title %></td>
+                                            <td><%= request.category || '미지정' %></td>
+                                            <td><%= request.user_name %></td>
+                                            <td><%= request.user_email %></td>
+                                            <td>
+                                                <span class="status-badge status-<%= request.status %>">
+                                                    <%= request.status === 'pending' ? '대기 중' : 
+                                                       request.status === 'approved' ? '승인됨' : '거부됨' %>
+                                                </span>
+                                            </td>
+                                            <td><%= new Date(request.created_at).toLocaleDateString() %></td>
+                                            <td>
+                                                <button class="btn btn-sm action-btn btn-view" onclick="viewRequest(<%= request.id %>)">
+                                                    <i class="fas fa-eye"></i> 보기
+                                                </button>
+                                                <% if (request.status === 'pending') { %>
+                                                    <button class="btn btn-sm action-btn btn-approve" onclick="updateRequestStatus(<%= request.id %>, 'approved')">
+                                                        <i class="fas fa-check"></i> 승인
+                                                    </button>
+                                                    <button class="btn btn-sm action-btn btn-reject" onclick="updateRequestStatus(<%= request.id %>, 'rejected')">
+                                                        <i class="fas fa-times"></i> 거부
+                                                    </button>
+                                                <% } %>
+                                            </td>
+                                        </tr>
+                                    <% }); %>
+                                <% } else { %>
+                                    <tr>
+                                        <td colspan="8" class="text-center">강의 요청이 없습니다</td>
+                                    </tr>
+                                <% } %>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="admin-card">
+                    <h2 class="admin-card-title">
+                        <i class="fas fa-book"></i> 강의 자료 관리
+                    </h2>
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>제목</th>
+                                    <th>카테고리</th>
+                                    <th>썸네일</th>
+                                    <th>등록일</th>
+                                    <th>작업</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% if (courses.length > 0) { %>
+                                    <% courses.forEach(function(course) { %>
+                                        <tr>
+                                            <td><%= course.id %></td>
+                                            <td><%= course.title %></td>
+                                            <td><%= course.category || '미지정' %></td>
+                                            <td>
+                                                <% if (course.thumbnail) { %>
+                                                    <img src="<%= course.thumbnail %>" alt="<%= course.title %>" style="width: 50px; height: 30px; object-fit: cover; border-radius: 4px;">
+                                                <% } else { %>
+                                                    <span class="text-muted">없음</span>
+                                                <% } %>
+                                            </td>
+                                            <td><%= new Date(course.created_at).toLocaleDateString() %></td>
+                                            <td>
+                                                <button class="btn btn-sm action-btn btn-view" onclick="viewCourse(<%= course.id %>)">
+                                                    <i class="fas fa-eye"></i> 보기
+                                                </button>
+                                                <button class="btn btn-sm action-btn btn-edit" onclick="editCourse(<%= course.id %>)">
+                                                    <i class="fas fa-edit"></i> 수정
+                                                </button>
+                                                <button class="btn btn-sm action-btn btn-delete" onclick="deleteCourse(<%= course.id %>)">
+                                                    <i class="fas fa-trash"></i> 삭제
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    <% }); %>
+                                <% } else { %>
+                                    <tr>
+                                        <td colspan="6" class="text-center">강의 자료가 없습니다</td>
+                                    </tr>
+                                <% } %>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 강의 업로드 섹션 추가 -->
+        <div class="admin-section mt-4">
+            <h3>새 강의 업로드</h3>
+            <div class="card">
+                <div class="card-body">
+                    <form id="courseUploadForm" class="needs-validation" novalidate>
+                        <div class="mb-3">
+                            <label for="courseTitle" class="form-label">강의 제목</label>
+                            <input type="text" class="form-control" id="courseTitle" name="title" required>
+                            <div class="invalid-feedback">강의 제목을 입력해주세요.</div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="courseCategory" class="form-label">카테고리</label>
+                            <input type="text" class="form-control" id="courseCategory" name="category">
+                        </div>
+                        <div class="mb-3">
+                            <label for="courseDescription" class="form-label">설명</label>
+                            <textarea class="form-control" id="courseDescription" name="description" rows="3"></textarea>
+                        </div>
+                        <div class="alert alert-info">
+                            <i class="fas fa-info-circle"></i> 슬라이드 파일은 서버의 <code>slides</code> 디렉토리에 있어야 합니다.
+                        </div>
+                        <button type="submit" class="btn btn-primary">강의 업로드</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <%- include('partials/footer') %>
+
+    <!-- 강의 요청 상세 보기 모달 -->
+    <div class="modal fade" id="requestModal" tabindex="-1" aria-labelledby="requestModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="requestModalLabel">강의 요청 상세 정보</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <h6 class="text-muted">제목</h6>
+                            <p id="requestTitle" class="fw-bold"></p>
+                        </div>
+                        <div class="col-md-6">
+                            <h6 class="text-muted">카테고리</h6>
+                            <p id="requestCategory"></p>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <h6 class="text-muted">요청자</h6>
+                            <p id="requestUserName"></p>
+                        </div>
+                        <div class="col-md-6">
+                            <h6 class="text-muted">이메일</h6>
+                            <p id="requestUserEmail"></p>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <h6 class="text-muted">상태</h6>
+                            <p id="requestStatus"></p>
+                        </div>
+                        <div class="col-md-6">
+                            <h6 class="text-muted">요청일</h6>
+                            <p id="requestCreatedAt"></p>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <h6 class="text-muted">설명</h6>
+                        <p id="requestDescription"></p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                    <button type="button" class="btn btn-success" id="approveBtn">승인</button>
+                    <button type="button" class="btn btn-danger" id="rejectBtn">거부</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // 테마 토글 기능
+        function toggleTheme() {
+            const html = document.documentElement;
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            
+            const icon = document.querySelector('.theme-toggle i');
+            icon.className = newTheme === 'light' ? 'fas fa-moon' : 'fas fa-sun';
+        }
+        
+        // 페이지 로드 시 저장된 테마 적용
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            
+            const icon = document.querySelector('.theme-toggle i');
+            icon.className = savedTheme === 'light' ? 'fas fa-moon' : 'fas fa-sun';
+            
+            // 모달 관련 변수
+            const requestModal = new bootstrap.Modal(document.getElementById('requestModal'));
+            const approveBtn = document.getElementById('approveBtn');
+            const rejectBtn = document.getElementById('rejectBtn');
+            let currentRequestId = null;
+            
+            // 승인 버튼 클릭 이벤트
+            approveBtn.addEventListener('click', () => {
+                if (currentRequestId) {
+                    updateRequestStatus(currentRequestId, 'approved');
+                }
+            });
+            
+            // 거부 버튼 클릭 이벤트
+            rejectBtn.addEventListener('click', () => {
+                if (currentRequestId) {
+                    updateRequestStatus(currentRequestId, 'rejected');
+                }
+            });
+            
+            // 모달이 닫힐 때 현재 요청 ID 초기화
+            document.getElementById('requestModal').addEventListener('hidden.bs.modal', () => {
+                currentRequestId = null;
+            });
+        });
+        
+        // 강의 요청 상태 업데이트
+        function updateRequestStatus(requestId, status) {
+            if (confirm('강의 요청 상태를 변경하시겠습니까?')) {
+                fetch(`/api/course-requests/${requestId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ status })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('상태가 업데이트되었습니다.');
+                        location.reload();
+                    } else {
+                        alert('상태 업데이트에 실패했습니다.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('오류가 발생했습니다.');
+                });
+            }
+        }
+        
+        // 강의 요청 상세 보기
+        function viewRequest(requestId) {
+            fetch(`/api/course-requests/${requestId}`)
+                .then(response => response.json())
+                .then(request => {
+                    // 모달에 데이터 채우기
+                    document.getElementById('requestTitle').textContent = request.title;
+                    document.getElementById('requestCategory').textContent = request.category || '미지정';
+                    document.getElementById('requestUserName').textContent = request.user_name;
+                    document.getElementById('requestUserEmail').textContent = request.user_email;
+                    document.getElementById('requestStatus').textContent = 
+                        request.status === 'pending' ? '대기 중' : 
+                        request.status === 'approved' ? '승인됨' : '거부됨';
+                    document.getElementById('requestCreatedAt').textContent = new Date(request.created_at).toLocaleDateString();
+                    document.getElementById('requestDescription').textContent = request.description || '설명 없음';
+                    
+                    // 현재 요청 ID 저장
+                    currentRequestId = requestId;
+                    
+                    // 상태에 따라 버튼 표시/숨김
+                    const approveBtn = document.getElementById('approveBtn');
+                    const rejectBtn = document.getElementById('rejectBtn');
+                    
+                    if (request.status === 'pending') {
+                        approveBtn.style.display = 'block';
+                        rejectBtn.style.display = 'block';
+                    } else {
+                        approveBtn.style.display = 'none';
+                        rejectBtn.style.display = 'none';
+                    }
+                    
+                    // 모달 표시
+                    const requestModal = new bootstrap.Modal(document.getElementById('requestModal'));
+                    requestModal.show();
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('강의 요청 정보를 가져오는 중 오류가 발생했습니다.');
+                });
+        }
+        
+        // 강의 상세 보기
+        function viewCourse(courseId) {
+            window.location.href = `/presentation/${courseId}`;
+        }
+        
+        // 강의 수정
+        function editCourse(courseId) {
+            // 수정 페이지로 이동
+            alert('강의 수정 기능은 아직 구현되지 않았습니다.');
+        }
+        
+        // 강의 삭제
+        function deleteCourse(courseId) {
+            if (confirm('정말로 이 강의를 삭제하시겠습니까?')) {
+                fetch(`/api/courses/${courseId}`, {
+                    method: 'DELETE'
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('강의가 삭제되었습니다.');
+                        location.reload();
+                    } else {
+                        alert('강의 삭제에 실패했습니다.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('오류가 발생했습니다.');
+                });
+            }
+        }
+
+        // 강의 업로드 폼 제출 처리
+        document.getElementById('courseUploadForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            if (!this.checkValidity()) {
+                e.stopPropagation();
+                this.classList.add('was-validated');
+                return;
+            }
+            
+            const formData = new FormData();
+            formData.append('title', document.getElementById('courseTitle').value);
+            formData.append('category', document.getElementById('courseCategory').value);
+            formData.append('description', document.getElementById('courseDescription').value);
+            
+            fetch('/api/courses', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    title: document.getElementById('courseTitle').value,
+                    category: document.getElementById('courseCategory').value,
+                    description: document.getElementById('courseDescription').value
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('강의가 성공적으로 업로드되었습니다.');
+                    location.reload();
+                } else {
+                    alert(data.message || '강의 업로드 중 오류가 발생했습니다.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('강의 업로드 중 오류가 발생했습니다.');
+            });
+        });
+    </script>
+</body>
+</html> 
