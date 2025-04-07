@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Git, GitHub 및 백준허브 연동 코테 세팅</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --github-dark: #0d1117;
+            --github-dark-secondary: #161b22;
+            --github-blue: #0366d6;
+            --github-blue-light: #58a6ff;
+            --github-text: #c9d1d9;
+            --github-border: #30363d;
+        }
+        
+        body {
+            font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
+            background-color: var(--github-dark);
+            color: var(--github-text);
+            margin: 0;
+            padding: 0;
+        }
+        
+        .slide-container {
+            width: 1280px;
+            min-height: 720px;
+            margin: 0 auto;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .feature-item {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.6s forwards;
+        }
+        
+        .feature-item:nth-child(1) { animation-delay: 0.2s; }
+        .feature-item:nth-child(2) { animation-delay: 0.4s; }
+        .feature-item:nth-child(3) { animation-delay: 0.6s; }
+        .feature-item:nth-child(4) { animation-delay: 0.8s; }
+        
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .customization-preview {
+            opacity: 0;
+            transform: translateX(40px);
+            animation: slideInLeft 0.8s ease-out 0.7s forwards;
+        }
+        
+        @keyframes slideInLeft {
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        .floating {
+            animation: float 4s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .hexagon {
+            position: absolute;
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+            z-index: -1;
+        }
+        
+        .blob {
+            position: absolute;
+            border-radius: 42% 58% 70% 30% / 45% 45% 55% 55%;
+            z-index: -1;
+        }
+        
+        .code-block {
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+        }
+        
+        .tag {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+    </style>
+</head>
+<body class="overflow-hidden">
+    <div class="slide-container flex flex-col p-16 relative bg-gradient-to-br from-gray-900 to-black">
+        <!-- Background elements -->
+        <div class="blob bg-blue-900 opacity-5" style="width: 600px; height: 600px; top: -200px; right: -200px;"></div>
+        <div class="hexagon bg-indigo-800 opacity-5" style="width: 400px; height: 400px; bottom: -150px; left: -100px;"></div>
+        
+        <!-- Grid pattern -->
+        <div class="absolute inset-0"
+             style="background-image: linear-gradient(var(--github-blue-light) 1px, transparent 1px), linear-gradient(90deg, var(--github-blue-light) 1px, transparent 1px); 
+                    background-size: 40px 40px; background-position: -1px -1px;
+                    opacity: 0.03;">
+        </div>
+        
+        <!-- Title Section -->
+        <div class="mb-8">
+            <h2 class="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-indigo-500">백준허브 고급 기능과 커스터마이징</h2>
+            <div class="h-1 w-32 bg-blue-500 mt-2"></div>
+            <p class="text-gray-400 mt-2">효율적인 코딩 테스트 관리를 위한 고급 설정과 팁</p>
+        </div>
+        
+        <div class="flex gap-8">
+            <!-- Left Column - Advanced Features -->
+            <div class="w-5/12">
+                <div class="space-y-5">
+                    <!-- Feature 1 -->
+                    <div class="bg-gray-800 bg-opacity-50 p-5 rounded-lg border-l-4 border-purple-500 feature-item hover:bg-opacity-70 transition-all duration-300">
+                        <h3 class="text-xl font-semibold text-purple-300 mb-3">커밋 메시지 커스터마이징</h3>
+                        <p class="text-gray-300 mb-3">
+                            백준허브 설정에서 커밋 메시지 템플릿을 변경하여 자신만의 스타일로 커밋 내역을 관리할 수 있습니다.
+                        </p>
+                        <div class="bg-gray-900 p-3 rounded-md border border-gray-700 text-sm">
+                            <div class="text-blue-300 mb-1">기본 템플릿:</div>
+                            <div class="text-gray-300">
+                                <code>[백준] 1000번: A+B (Bronze V)</code>
+                            </div>
+                            <div class="text-blue-300 mt-2 mb-1">커스텀 템플릿 예시:</div>
+                            <div class="text-gray-300">
+                                <code>✅ [BOJ-1000] A+B | 난이도: Bronze V | #수학 #구현</code>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Feature 2 -->
+                    <div class="bg-gray-800 bg-opacity-50 p-5 rounded-lg border-l-4 border-blue-500 feature-item hover:bg-opacity-70 transition-all duration-300">
+                        <h3 class="text-xl font-semibold text-blue-300 mb-3">다중 언어 지원 설정</h3>
+                        <p class="text-gray-300 mb-3">
+                            다양한 프로그래밍 언어로 문제를 풀 경우, 언어별로 파일 확장자와 저장 방식을 설정할 수 있습니다.
+                        </p>
+                        <div class="flex flex-wrap mt-3 gap-2">
+                            <div class="tag bg-blue-900 text-blue-200">Python (.py)</div>
+                            <div class="tag bg-yellow-900 text-yellow-200">JavaScript (.js)</div>
+                            <div class="tag bg-green-900 text-green-200">Java (.java)</div>
+                            <div class="tag bg-red-900 text-red-200">C++ (.cpp)</div>
+                            <div class="tag bg-purple-900 text-purple-200">Go (.go)</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Feature 3 -->
+                    <div class="bg-gray-800 bg-opacity-50 p-5 rounded-lg border-l-4 border-green-500 feature-item hover:bg-opacity-70 transition-all duration-300">
+                        <h3 class="text-xl font-semibold text-green-300 mb-3">코드 통계 및 풀이 추적</h3>
+                        <p class="text-gray-300 mb-3">
+                            GitHub 리포지토리와 연계하여 문제 해결 통계, 언어별 사용 비율, 풀이 패턴 등을 시각화할 수 있습니다.
+                        </p>
+                        <div class="bg-gray-900 p-3 rounded-md border border-gray-700">
+                            <div class="text-sm text-gray-400 mb-2">GitHub 리포지토리에서 확인 가능한 정보:</div>
+                            <div class="flex flex-wrap gap-3">
+                                <div class="flex items-center text-xs">
+                                    <div class="w-3 h-3 rounded-full bg-blue-500 mr-1"></div>
+                                    <span class="text-gray-300">난이도별 분포</span>
+                                </div>
+                                <div class="flex items-center text-xs">
+                                    <div class="w-3 h-3 rounded-full bg-green-500 mr-1"></div>
+                                    <span class="text-gray-300">언어별 비율</span>
+                                </div>
+                                <div class="flex items-center text-xs">
+                                    <div class="w-3 h-3 rounded-full bg-purple-500 mr-1"></div>
+                                    <span class="text-gray-300">문제 유형</span>
+                                </div>
+                                <div class="flex items-center text-xs">
+                                    <div class="w-3 h-3 rounded-full bg-yellow-500 mr-1"></div>
+                                    <span class="text-gray-300">월별 풀이량</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Feature 4 -->
+                    <div class="bg-gray-800 bg-opacity-50 p-5 rounded-lg border-l-4 border-yellow-500 feature-item hover:bg-opacity-70 transition-all duration-300">
+                        <h3 class="text-xl font-semibold text-yellow-300 mb-3">문제 분류 및 태그 관리</h3>
+                        <p class="text-gray-300 mb-3">
+                            알고리즘 유형별로 문제를 분류하고 태그를 추가하여 체계적인 학습 포트폴리오를 구축할 수 있습니다.
+                        </p>
+                        <div class="flex flex-col space-y-2 text-sm">
+                            <div class="flex items-center">
+                                <i class="fas fa-folder-open text-yellow-400 mr-2"></i>
+                                <span class="text-gray-300">자동 생성된 태그: solved.ac 기반 문제 유형 태그</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fas fa-plus-circle text-green-400 mr-2"></i>
+                                <span class="text-gray-300">커스텀 태그: 개인 학습용 메모 및 분류 추가 가능</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Right Column - Customization Preview -->
+            <div class="w-7/12 customization-preview">
+                <div class="bg-gray-800 bg-opacity-60 p-6 rounded-xl border border-gray-700 h-full">
+                    <h3 class="text-2xl font-semibold text-blue-300 mb-5">백준허브 커스터마이징 예시</h3>
+                    
+                    <!-- Tabs Navigation -->
+                    <div class="flex border-b border-gray-700 mb-4">
+                        <div class="px-4 py-2 text-blue-400 border-b-2 border-blue-500 font-medium">설정 관리</div>
+                        <div class="px-4 py-2 text-gray-400">커밋 템플릿</div>
+                        <div class="px-4 py-2 text-gray-400">폴더 구조</div>
+                        <div class="px-4 py-2 text-gray-400">통계 대시보드</div>
+                    </div>
+                    
+                    <!-- Settings Interface -->
+                    <div class="bg-gray-900 rounded-lg border border-gray-700 overflow-hidden mb-5">
+                        <!-- Interface Header -->
+                        <div class="bg-gray-800 border-b border-gray-700 p-3 flex items-center">
+                            <div class="w-8 h-8 bg-blue-700 rounded flex items-center justify-center mr-3">
+                                <span class="text-white font-bold text-sm">BH</span>
+                            </div>
+                            <span class="text-white font-medium">백준허브 고급 설정</span>
+                        </div>
+                        
+                        <!-- Settings Content -->
+                        <div class="p-5">
+                            <!-- Repository Settings -->
+                            <div class="mb-4">
+                                <label class="block text-white font-medium mb-2">저장소 설정</label>
+                                <div class="flex space-x-2">
+                                    <input type="text" value="백준-알고리즘-솔루션" class="flex-grow bg-gray-800 border border-gray-700 rounded-md p-2 text-gray-300 text-sm" placeholder="Repository Name">
+                                    <select class="bg-gray-800 border border-gray-700 rounded-md p-2 text-gray-300 text-sm">
+                                        <option>Public</option>
+                                        <option>Private</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <!-- Folder Structure -->
+                            <div class="mb-4">
+                                <label class="block text-white font-medium mb-2">폴더 구조</label>
+                                <div class="flex items-center space-x-2 mb-2">
+                                    <input type="checkbox" checked class="rounded bg-gray-800 border-gray-700 text-blue-500">
+                                    <span class="text-gray-300 text-sm">난이도별 분류</span>
+                                </div>
+                                <div class="flex items-center space-x-2 mb-2">
+                                    <input type="checkbox" checked class="rounded bg-gray-800 border-gray-700 text-blue-500">
+                                    <span class="text-gray-300 text-sm">알고리즘 유형별 분류</span>
+                                </div>
+                                <div class="flex items-center space-x-2">
+                                    <input type="checkbox" class="rounded bg-gray-800 border-gray-700 text-blue-500">
+                                    <span class="text-gray-300 text-sm">플랫폼별 분류</span>
+                                </div>
+                            </div>
+                            
+                            <!-- Commit Message Format -->
+                            <div class="mb-4">
+                                <label class="block text-white font-medium mb-2">커밋 메시지 형식</label>
+                                <div class="space-y-2">
+                                    <div class="text-xs text-gray-400">사용 가능한 변수: {문제번호}, {문제이름}, {난이도}, {유형}</div>
+                                    <input type="text" value="[{플랫폼}] {문제번호}번: {문제이름} ({난이도})" class="w-full bg-gray-800 border border-gray-700 rounded-md p-2 text-gray-300 text-sm">
+                                </div>
+                            </div>
+                            
+                            <!-- Additional Options -->
+                            <div>
+                                <label class="block text-white font-medium mb-2">추가 옵션</label>
+                                <div class="grid grid-cols-2 gap-2">
+                                    <div class="flex items-center justify-between bg-gray-800 p-2 rounded-md">
+                                        <span class="text-gray-300 text-sm">README 자동 생성</span>
+                                        <div class="relative">
+                                            <div class="w-10 h-5 bg-blue-600 rounded-full"></div>
+                                            <div class="absolute right-0.5 top-0.5 w-4 h-4 bg-white rounded-full"></div>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center justify-between bg-gray-800 p-2 rounded-md">
+                                        <span class="text-gray-300 text-sm">코드 통계 수집</span>
+                                        <div class="relative">
+                                            <div class="w-10 h-5 bg-blue-600 rounded-full"></div>
+                                            <div class="absolute right-0.5 top-0.5 w-4 h-4 bg-white rounded-full"></div>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center justify-between bg-gray-800 p-2 rounded-md">
+                                        <span class="text-gray-300 text-sm">자동 태그 생성</span>
+                                        <div class="relative">
+                                            <div class="w-10 h-5 bg-blue-600 rounded-full"></div>
+                                            <div class="absolute right-0.5 top-0.5 w-4 h-4 bg-white rounded-full"></div>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center justify-between bg-gray-800 p-2 rounded-md">
+                                        <span class="text-gray-300 text-sm">코드 주석 보존</span>
+                                        <div class="relative">
+                                            <div class="w-10 h-5 bg-blue-600 rounded-full"></div>
+                                            <div class="absolute right-0.5 top-0.5 w-4 h-4 bg-white rounded-full"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Visual Result Preview -->
+                    <div class="flex justify-between items-start">
+                        <!-- GitHub Card -->
+                        <div class="w-1/2 pr-2">
+                            <div class="bg-gray-900 rounded-lg border border-gray-700 overflow-hidden">
+                                <div class="bg-gray-800 p-3 flex items-center justify-between border-b border-gray-700">
+                                    <div class="flex items-center">
+                                        <i class="fab fa-github text-white mr-2"></i>
+                                        <span class="text-sm text-white">커스텀 커밋 결과</span>
+                                    </div>
+                                </div>
+                                <div class="p-3">
+                                    <div class="text-sm font-medium text-white flex items-center mb-2">
+                                        <i class="fas fa-code-commit text-blue-400 mr-2"></i>
+                                        ✅ [BOJ-1001] A-B | Bronze V | #수학
+                                    </div>
+                                    <div class="bg-gray-800 rounded p-2 text-xs text-gray-400 font-mono">
+                                        // 입력받은 두 정수의 차를 출력하는 문제<br>
+                                        // 기본적인 입출력과 연산을 테스트함<br>
+                                        #include &lt;iostream&gt;<br>
+                                        using namespace std;<br><br>
+                                        int main() {<br>
+                                        &nbsp;&nbsp;int a, b;<br>
+                                        &nbsp;&nbsp;cin >> a >> b;<br>
+                                        &nbsp;&nbsp;cout << a - b << endl;<br>
+                                        &nbsp;&nbsp;return 0;<br>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- README Preview -->
+                        <div class="w-1/2 pl-2">
+                            <div class="bg-gray-900 rounded-lg border border-gray-700 overflow-hidden">
+                                <div class="bg-gray-800 p-3 flex items-center justify-between border-b border-gray-700">
+                                    <div class="flex items-center">
+                                        <i class="fab fa-markdown text-white mr-2"></i>
+                                        <span class="text-sm text-white">자동 생성된 README</span>
+                                    </div>
+                                </div>
+                                <div class="p-3">
+                                    <div class="text-sm font-medium text-white mb-2">
+                                        # 백준 1001번: A-B
+                                    </div>
+                                    <div class="bg-gray-800 rounded p-2 text-xs text-gray-400 space-y-2">
+                                        <div>
+                                            <span class="text-blue-400">## 문제</span><br>
+                                            두 정수 A와 B를 입력받은 다음, A-B를 출력하는 프로그램을 작성하시오.
+                                        </div>
+                                        <div>
+                                            <span class="text-blue-400">## 입력</span><br>
+                                            첫째 줄에 A와 B가 주어진다. (0 < A, B < 10)
+                                        </div>
+                                        <div>
+                                            <span class="text-blue-400">## 출력</span><br>
+                                            첫째 줄에 A-B를 출력한다.
+                                        </div>
+                                        <div>
+                                            <span class="text-blue-400">## 태그</span><br>
+                                            #수학 #구현 #사칙연산
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Pro tip -->
+        <div class="mt-auto py-3 px-5 bg-gray-800 bg-opacity-50 rounded-lg inline-block self-start">
+            <p class="text-gray-300 flex items-center text-sm">
+                <i class="fas fa-lightbulb text-yellow-400 mr-2"></i>
+                <strong>Pro Tip:</strong>&nbsp;
+                <span class="text-gray-400">자주 사용하는 알고리즘이나 자료구조 템플릿을 미리 작성해두고, 코드에 주석으로 추가하면 백준허브가 자동으로 함께 저장해 줍니다.</span>
+            </p>
+        </div>
+        
+        <!-- Page number -->
+        <div class="absolute bottom-6 right-8 text-gray-500">
+            12 / 25
+        </div>
+    </div>
+</body>
+</html>

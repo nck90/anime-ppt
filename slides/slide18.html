@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Git, GitHub 및 백준허브 연동 코테 세팅</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --github-dark: #0d1117;
+            --github-dark-secondary: #161b22;
+            --github-blue: #0366d6;
+            --github-blue-light: #58a6ff;
+            --github-text: #c9d1d9;
+            --github-border: #30363d;
+        }
+        
+        body {
+            font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
+            background-color: var(--github-dark);
+            color: var(--github-text);
+            margin: 0;
+            padding: 0;
+        }
+        
+        .slide-container {
+            width: 1280px;
+            min-height: 720px;
+            margin: 0 auto;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .collaboration-item {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.6s forwards;
+        }
+        
+        .collaboration-item:nth-child(1) { animation-delay: 0.2s; }
+        .collaboration-item:nth-child(2) { animation-delay: 0.4s; }
+        .collaboration-item:nth-child(3) { animation-delay: 0.6s; }
+        .collaboration-item:nth-child(4) { animation-delay: 0.8s; }
+        
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .team-visual {
+            opacity: 0;
+            transform: translateX(30px);
+            animation: slideIn 0.8s forwards 0.7s;
+        }
+        
+        @keyframes slideIn {
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        .hexagon {
+            position: absolute;
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+            z-index: -1;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(8, 83, 156, 0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .tag {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .connection-line {
+            position: absolute;
+            width: 2px;
+            background-color: var(--github-blue-light);
+            opacity: 0.5;
+        }
+        
+        .connection-dot {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: var(--github-blue-light);
+        }
+    </style>
+</head>
+<body class="overflow-hidden">
+    <div class="slide-container flex flex-col p-16 relative bg-gradient-to-br from-gray-900 to-black">
+        <!-- Background elements -->
+        <div class="hexagon bg-blue-900 opacity-5" style="width: 500px; height: 500px; top: -150px; right: -100px;"></div>
+        <div class="hexagon bg-indigo-800 opacity-5" style="width: 400px; height: 400px; bottom: -150px; left: -100px;"></div>
+        
+        <!-- Grid pattern -->
+        <div class="absolute inset-0"
+             style="background-image: linear-gradient(var(--github-blue-light) 1px, transparent 1px), linear-gradient(90deg, var(--github-blue-light) 1px, transparent 1px); 
+                    background-size: 40px 40px; background-position: -1px -1px;
+                    opacity: 0.03;">
+        </div>
+        
+        <!-- Title Section -->
+        <div class="mb-8">
+            <h2 class="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-indigo-500">팀 협업을 위한 Git & GitHub 고급 기법</h2>
+            <div class="h-1 w-32 bg-blue-500 mt-2"></div>
+            <p class="text-gray-400 mt-2">코딩 테스트 스터디 그룹과 프로젝트 팀을 위한 효과적인 협업 전략</p>
+        </div>
+        
+        <div class="flex gap-8">
+            <!-- Left Column - Collaboration Features -->
+            <div class="w-5/12">
+                <div class="space-y-5">
+                    <!-- Feature 1 -->
+                    <div class="bg-gray-800 bg-opacity-50 p-5 rounded-lg border-l-4 border-blue-500 collaboration-item hover:bg-opacity-70 transition-all duration-300 card-hover">
+                        <h3 class="text-xl font-semibold text-blue-300 mb-3">GitHub 코드 리뷰 활용</h3>
+                        <p class="text-gray-300 mb-3">
+                            Pull Request를 통한 코드 리뷰는 문제 해결 접근법 향상과 코드 품질 개선에 효과적입니다.
+                        </p>
+                        <div class="bg-gray-900 p-3 rounded-md border border-gray-700">
+                            <div class="text-sm text-white mb-2">효과적인 코드 리뷰 문화:</div>
+                            <div class="space-y-1.5 text-xs text-gray-400">
+                                <div class="flex items-start">
+                                    <i class="fas fa-check-circle text-blue-400 mt-0.5 mr-2"></i>
+                                    <span>구체적이고 건설적인 피드백 제공하기</span>
+                                </div>
+                                <div class="flex items-start">
+                                    <i class="fas fa-check-circle text-blue-400 mt-0.5 mr-2"></i>
+                                    <span>알고리즘의 시간/공간 복잡도 분석 공유하기</span>
+                                </div>
+                                <div class="flex items-start">
+                                    <i class="fas fa-check-circle text-blue-400 mt-0.5 mr-2"></i>
+                                    <span>대안적 해결책 제안하기</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Feature 2 -->
+                    <div class="bg-gray-800 bg-opacity-50 p-5 rounded-lg border-l-4 border-green-500 collaboration-item hover:bg-opacity-70 transition-all duration-300 card-hover">
+                        <h3 class="text-xl font-semibold text-green-300 mb-3">GitHub 프로젝트 보드</h3>
+                        <p class="text-gray-300 mb-3">
+                            프로젝트 보드를 활용해 팀 내 코딩 테스트 준비 진행 상황을 시각적으로 관리할 수 있습니다.
+                        </p>
+                        <div class="flex flex-wrap mt-3 gap-2">
+                            <div class="tag bg-red-900 text-red-200">해결 필요</div>
+                            <div class="tag bg-yellow-900 text-yellow-200">진행 중</div>
+                            <div class="tag bg-green-900 text-green-200">해결 완료</div>
+                            <div class="tag bg-blue-900 text-blue-200">리뷰 중</div>
+                            <div class="tag bg-purple-900 text-purple-200">최적화 필요</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Feature 3 -->
+                    <div class="bg-gray-800 bg-opacity-50 p-5 rounded-lg border-l-4 border-purple-500 collaboration-item hover:bg-opacity-70 transition-all duration-300 card-hover">
+                        <h3 class="text-xl font-semibold text-purple-300 mb-3">GitHub Discussion과 Wiki</h3>
+                        <p class="text-gray-300 mb-3">
+                            팀 내 지식 공유와 알고리즘 학습 리소스 관리에 GitHub의 Discussion과 Wiki 기능을 활용하세요.
+                        </p>
+                        <div class="space-y-2 text-sm">
+                            <div class="flex items-start">
+                                <i class="fas fa-book text-purple-400 mr-2 mt-1"></i>
+                                <div>
+                                    <span class="text-white">Wiki로 알고리즘 가이드 문서화</span>
+                                    <p class="text-gray-400 text-xs mt-0.5">자주 사용되는 알고리즘 템플릿 및 해설 공유</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <i class="fas fa-comments text-purple-400 mr-2 mt-1"></i>
+                                <div>
+                                    <span class="text-white">Discussion으로 문제 해결 전략 논의</span>
+                                    <p class="text-gray-400 text-xs mt-0.5">팀원 간 질의응답과 접근법 토론</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Feature 4 -->
+                    <div class="bg-gray-800 bg-opacity-50 p-5 rounded-lg border-l-4 border-yellow-500 collaboration-item hover:bg-opacity-70 transition-all duration-300 card-hover">
+                        <h3 class="text-xl font-semibold text-yellow-300 mb-3">GitHub Copilot 팀 활용</h3>
+                        <p class="text-gray-300 mb-2">
+                            GitHub Copilot을 활용해 팀 내 코드 작성 생산성을 높이고, 새로운 알고리즘 접근법을 배울 수 있습니다.
+                        </p>
+                        <div class="bg-yellow-900 bg-opacity-20 p-3 rounded-md border border-yellow-800 text-sm">
+                            <div class="flex items-start">
+                                <i class="fas fa-robot text-yellow-400 mt-1 mr-2"></i>
+                                <span class="text-gray-300">Copilot의 제안을 무조건 수용하기보다, 코드 작성 과정에서 학습 도구로 활용하는 것이 효과적입니다.</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Right Column - Team Collaboration Visual -->
+            <div class="w-7/12 team-visual">
+                <div class="bg-gray-800 bg-opacity-60 p-6 rounded-xl border border-gray-700 h-full">
+                    <h3 class="text-2xl font-semibold text-blue-300 mb-5">코딩 테스트 스터디 GitHub 협업 모델</h3>
+                    
+                    <!-- Team Workflow Diagram -->
+                    <div class="bg-gray-900 rounded-lg border border-gray-700 p-5 mb-5 relative" style="height: 320px;">
+                        <!-- Central Repository -->
+                        <div class="absolute left-1/2 top-4 transform -translate-x-1/2 bg-gray-800 p-4 rounded-lg border border-blue-900 w-64 text-center z-10">
+                            <div class="flex items-center justify-center mb-2">
+                                <i class="fab fa-github text-white text-2xl mr-2"></i>
+                                <span class="text-white font-medium">팀 중앙 리포지토리</span>
+                            </div>
+                            <p class="text-xs text-gray-400">algorithm-study/team-repo</p>
+                        </div>
+                        
+                        <!-- Team Members -->
+                        <div class="absolute left-4 bottom-4 bg-gray-800 p-3 rounded-lg border border-green-900 w-52">
+                            <div class="flex items-center mb-2">
+                                <div class="w-8 h-8 bg-green-900 bg-opacity-40 rounded-full flex items-center justify-center mr-2">
+                                    <i class="fas fa-user text-green-400"></i>
+                                </div>
+                                <div>
+                                    <div class="text-white text-sm font-medium">팀원 A</div>
+                                    <div class="text-xs text-gray-400">그래프 알고리즘 담당</div>
+                                </div>
+                            </div>
+                            <div class="text-xs text-gray-300 flex items-center">
+                                <i class="fas fa-code-branch text-green-400 mr-1"></i>
+                                <span>Fork된 개인 리포지토리</span>
+                            </div>
+                        </div>
+                        
+                        <div class="absolute right-4 bottom-4 bg-gray-800 p-3 rounded-lg border border-purple-900 w-52">
+                            <div class="flex items-center mb-2">
+                                <div class="w-8 h-8 bg-purple-900 bg-opacity-40 rounded-full flex items-center justify-center mr-2">
+                                    <i class="fas fa-user text-purple-400"></i>
+                                </div>
+                                <div>
+                                    <div class="text-white text-sm font-medium">팀원 B</div>
+                                    <div class="text-xs text-gray-400">DP 알고리즘 담당</div>
+                                </div>
+                            </div>
+                            <div class="text-xs text-gray-300 flex items-center">
+                                <i class="fas fa-code-branch text-purple-400 mr-1"></i>
+                                <span>Fork된 개인 리포지토리</span>
+                            </div>
+                        </div>
+                        
+                        <div class="absolute left-1/3 bottom-4 transform -translate-x-1/2 bg-gray-800 p-3 rounded-lg border border-yellow-900 w-52">
+                            <div class="flex items-center mb-2">
+                                <div class="w-8 h-8 bg-yellow-900 bg-opacity-40 rounded-full flex items-center justify-center mr-2">
+                                    <i class="fas fa-user text-yellow-400"></i>
+                                </div>
+                                <div>
+                                    <div class="text-white text-sm font-medium">팀원 C</div>
+                                    <div class="text-xs text-gray-400">탐색 알고리즘 담당</div>
+                                </div>
+                            </div>
+                            <div class="text-xs text-gray-300 flex items-center">
+                                <i class="fas fa-code-branch text-yellow-400 mr-1"></i>
+                                <span>Fork된 개인 리포지토리</span>
+                            </div>
+                        </div>
+                        
+                        <div class="absolute right-1/3 bottom-4 transform translate-x-1/2 bg-gray-800 p-3 rounded-lg border border-red-900 w-52">
+                            <div class="flex items-center mb-2">
+                                <div class="w-8 h-8 bg-red-900 bg-opacity-40 rounded-full flex items-center justify-center mr-2">
+                                    <i class="fas fa-user text-red-400"></i>
+                                </div>
+                                <div>
+                                    <div class="text-white text-sm font-medium">팀원 D</div>
+                                    <div class="text-xs text-gray-400">자료구조 담당</div>
+                                </div>
+                            </div>
+                            <div class="text-xs text-gray-300 flex items-center">
+                                <i class="fas fa-code-branch text-red-400 mr-1"></i>
+                                <span>Fork된 개인 리포지토리</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Connection Lines -->
+                        <div class="connection-line" style="left: 50%; top: 76px; height: 120px;"></div>
+                        <div class="connection-dot" style="left: 50%; top: 76px; transform: translate(-50%, -50%);"></div>
+                        <div class="connection-dot" style="left: 50%; bottom: 120px; transform: translate(-50%, 50%);"></div>
+                        
+                        <!-- Connection to Member A -->
+                        <div class="connection-line" style="left: 30%; bottom: 120px; transform: rotate(45deg); transform-origin: bottom left; height: 120px; width: 3px;"></div>
+                        <div class="connection-line" style="left: 70%; bottom: 120px; transform: rotate(-45deg); transform-origin: bottom right; height: 120px; width: 3px;"></div>
+                        
+                        <!-- Flow Indicators -->
+                        <div class="absolute left-[25%] top-1/2 text-xs text-blue-300 bg-gray-800 px-2 py-1 rounded transform -translate-y-1/2">
+                            PR & 코드 리뷰
+                        </div>
+                        <div class="absolute right-[25%] top-1/2 text-xs text-blue-300 bg-gray-800 px-2 py-1 rounded transform -translate-y-1/2">
+                            Fork & Clone
+                        </div>
+                    </div>
+                    
+                    <!-- GitHub Projects Visual -->
+                    <div class="bg-gray-900 p-4 rounded-lg border border-gray-700">
+                        <h4 class="text-white text-lg font-medium mb-3 flex items-center">
+                            <i class="fas fa-tasks text-blue-400 mr-2"></i>
+                            코딩 테스트 스터디 프로젝트 보드 예시
+                        </h4>
+                        
+                        <div class="flex space-x-3 overflow-x-auto pb-2">
+                            <!-- To Do Column -->
+                            <div class="flex-shrink-0 w-48 bg-gray-800 rounded-md p-2">
+                                <div class="text-sm text-gray-300 font-medium mb-2">해결 필요 (4)</div>
+                                
+                                <div class="space-y-2">
+                                    <div class="bg-gray-900 p-2 rounded text-xs">
+                                        <div class="flex justify-between mb-1">
+                                            <span class="text-white">백준 1753번</span>
+                                            <span class="px-1.5 py-0.5 bg-yellow-900 text-yellow-200 rounded text-[10px]">Gold IV</span>
+                                        </div>
+                                        <div class="text-gray-400">최단경로 (다익스트라)</div>
+                                    </div>
+                                    
+                                    <div class="bg-gray-900 p-2 rounded text-xs">
+                                        <div class="flex justify-between mb-1">
+                                            <span class="text-white">백준 1103번</span>
+                                            <span class="px-1.5 py-0.5 bg-yellow-900 text-yellow-200 rounded text-[10px]">Gold II</span>
+                                        </div>
+                                        <div class="text-gray-400">게임 (DP+DFS)</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- In Progress Column -->
+                            <div class="flex-shrink-0 w-48 bg-gray-800 rounded-md p-2">
+                                <div class="text-sm text-gray-300 font-medium mb-2">진행 중 (2)</div>
+                                
+                                <div class="space-y-2">
+                                    <div class="bg-gray-900 p-2 rounded text-xs border-l-2 border-blue-500">
+                                        <div class="flex justify-between mb-1">
+                                            <span class="text-white">백준 2252번</span>
+                                            <span class="px-1.5 py-0.5 bg-yellow-900 text-yellow-200 rounded text-[10px]">Gold III</span>
+                                        </div>
+                                        <div class="text-gray-400">줄 세우기 (위상정렬)</div>
+                                        <div class="mt-1 text-blue-400 text-[10px] flex items-center">
+                                            <i class="fas fa-user mr-1"></i>
+                                            <span>팀원 A 작업 중</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Review Column -->
+                            <div class="flex-shrink-0 w-48 bg-gray-800 rounded-md p-2">
+                                <div class="text-sm text-gray-300 font-medium mb-2">리뷰 중 (1)</div>
+                                
+                                <div class="space-y-2">
+                                    <div class="bg-gray-900 p-2 rounded text-xs border-l-2 border-purple-500">
+                                        <div class="flex justify-between mb-1">
+                                            <span class="text-white">백준 11404번</span>
+                                            <span class="px-1.5 py-0.5 bg-yellow-900 text-yellow-200 rounded text-[10px]">Gold IV</span>
+                                        </div>
+                                        <div class="text-gray-400">플로이드 (최단경로)</div>
+                                        <div class="mt-1 text-purple-400 text-[10px] flex items-center">
+                                            <i class="fas fa-code-branch mr-1"></i>
+                                            <span>PR #12 검토 중</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Done Column -->
+                            <div class="flex-shrink-0 w-48 bg-gray-800 rounded-md p-2">
+                                <div class="text-sm text-gray-300 font-medium mb-2">완료 (8)</div>
+                                
+                                <div class="space-y-2">
+                                    <div class="bg-gray-900 p-2 rounded text-xs border-l-2 border-green-500">
+                                        <div class="flex justify-between mb-1">
+                                            <span class="text-white">백준 1260번</span>
+                                            <span class="px-1.5 py-0.5 bg-gray-700 text-gray-300 rounded text-[10px]">Silver II</span>
+                                        </div>
+                                        <div class="text-gray-400">DFS와 BFS</div>
+                                        <div class="mt-1 text-green-400 text-[10px] flex items-center">
+                                            <i class="fas fa-check-circle mr-1"></i>
+                                            <span>3가지 접근법 정리됨</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Pro tip -->
+        <div class="mt-auto py-3 px-5 bg-gray-800 bg-opacity-50 rounded-lg inline-block self-start">
+            <p class="text-gray-300 flex items-center text-sm">
+                <i class="fas fa-lightbulb text-yellow-400 mr-2"></i>
+                <strong>Pro Tip:</strong>&nbsp;
+                <span class="text-gray-400">GitHub의 PR 템플릿을 활용하여 문제 해결 접근법, 시간/공간 복잡도, 개선 가능성 등을 체계적으로 기록하는 습관을 팀 내에 정착시키세요.</span>
+            </p>
+        </div>
+        
+        <!-- Page number -->
+        <div class="absolute bottom-6 right-8 text-gray-500">
+            18 / 25
+        </div>
+    </div>
+</body>
+</html>

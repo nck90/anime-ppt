@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Git, GitHub 및 백준허브 연동 코테 세팅</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --github-dark: #0d1117;
+            --github-dark-secondary: #161b22;
+            --github-blue: #0366d6;
+            --github-blue-light: #58a6ff;
+            --github-text: #c9d1d9;
+            --github-border: #30363d;
+        }
+        
+        body {
+            font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
+            background-color: var(--github-dark);
+            color: var(--github-text);
+            margin: 0;
+            padding: 0;
+        }
+        
+        .slide-container {
+            width: 1280px;
+            min-height: 720px;
+            margin: 0 auto;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .faq-item {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.6s forwards;
+        }
+        
+        .faq-item:nth-child(1) { animation-delay: 0.2s; }
+        .faq-item:nth-child(2) { animation-delay: 0.4s; }
+        .faq-item:nth-child(3) { animation-delay: 0.6s; }
+        .faq-item:nth-child(4) { animation-delay: 0.8s; }
+        .faq-item:nth-child(5) { animation-delay: 1.0s; }
+        .faq-item:nth-child(6) { animation-delay: 1.2s; }
+        
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .hexagon {
+            position: absolute;
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+            z-index: -1;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 15px rgba(88, 166, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-out;
+        }
+        
+        .faq-item:hover .faq-answer {
+            max-height: 300px;
+        }
+        
+        .accent-gradient {
+            background: linear-gradient(90deg, #58a6ff 0%, #79c0ff 100%);
+        }
+    </style>
+</head>
+<body class="overflow-hidden">
+    <div class="slide-container flex flex-col p-16 relative bg-gradient-to-br from-gray-900 to-black">
+        <!-- Background elements -->
+        <div class="hexagon bg-blue-900 opacity-5" style="width: 500px; height: 500px; top: -150px; right: -100px;"></div>
+        <div class="hexagon bg-indigo-800 opacity-5" style="width: 400px; height: 400px; bottom: -150px; left: -100px;"></div>
+        
+        <!-- Grid pattern -->
+        <div class="absolute inset-0"
+             style="background-image: linear-gradient(var(--github-blue-light) 1px, transparent 1px), linear-gradient(90deg, var(--github-blue-light) 1px, transparent 1px); 
+                    background-size: 40px 40px; background-position: -1px -1px;
+                    opacity: 0.03;">
+        </div>
+        
+        <!-- Title Section -->
+        <div class="mb-8">
+            <h2 class="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-indigo-500">자주 묻는 질문 (FAQ)</h2>
+            <div class="h-1 w-28 bg-blue-500 mt-2"></div>
+            <p class="text-gray-400 mt-2">Git, GitHub 및 백준허브 사용 시 자주 나오는 질문과 답변</p>
+        </div>
+        
+        <div class="grid grid-cols-2 gap-6">
+            <!-- FAQ Item 1 -->
+            <div class="bg-gray-800 bg-opacity-60 p-5 rounded-xl border border-gray-700 faq-item hover:bg-opacity-80 transition-all duration-300 card-hover">
+                <div class="flex items-center mb-2">
+                    <div class="w-10 h-10 rounded-full bg-blue-900 bg-opacity-40 flex items-center justify-center mr-3">
+                        <i class="fas fa-question text-blue-400 text-lg"></i>
+                    </div>
+                    <h3 class="text-lg font-semibold text-blue-300">백준허브가 작동하지 않을 때는 어떻게 해야 하나요?</h3>
+                </div>
+                <div class="faq-answer pl-14 text-gray-300">
+                    <p class="mb-2">백준허브가 작동하지 않는 경우 다음 방법을 시도해보세요:</p>
+                    <ul class="list-disc pl-5 text-sm text-gray-400 space-y-1">
+                        <li>Chrome 확장 프로그램 페이지에서 백준허브를 비활성화했다가 다시 활성화</li>
+                        <li>GitHub 계정 재인증 진행</li>
+                        <li>백준 사이트에서 solved.ac 연동 확인</li>
+                        <li>크롬 브라우저 재시작</li>
+                        <li>최신 버전으로 업데이트</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- FAQ Item 2 -->
+            <div class="bg-gray-800 bg-opacity-60 p-5 rounded-xl border border-gray-700 faq-item hover:bg-opacity-80 transition-all duration-300 card-hover">
+                <div class="flex items-center mb-2">
+                    <div class="w-10 h-10 rounded-full bg-green-900 bg-opacity-40 flex items-center justify-center mr-3">
+                        <i class="fas fa-question text-green-400 text-lg"></i>
+                    </div>
+                    <h3 class="text-lg font-semibold text-green-300">Git 커밋을 실수로 했을 때 되돌리는 방법은?</h3>
+                </div>
+                <div class="faq-answer pl-14 text-gray-300">
+                    <p class="mb-2">실수로 한 커밋을 되돌리는 여러 방법이 있습니다:</p>
+                    <div class="bg-gray-900 bg-opacity-50 p-2 rounded text-sm">
+                        <pre class="text-gray-300"><code># 가장 최근 커밋 취소 (변경사항 유지)
+git reset --soft HEAD~1
+
+# 완전히 되돌리기 (변경사항 삭제)
+git reset --hard HEAD~1
+
+# 새 커밋으로 이전 커밋 되돌리기
+git revert HEAD</code></pre>
+                    </div>
+                    <p class="text-xs text-gray-400 mt-2">공개 저장소의 경우 revert가 더 안전한 방법입니다.</p>
+                </div>
+            </div>
+            
+            <!-- FAQ Item 3 -->
+            <div class="bg-gray-800 bg-opacity-60 p-5 rounded-xl border border-gray-700 faq-item hover:bg-opacity-80 transition-all duration-300 card-hover">
+                <div class="flex items-center mb-2">
+                    <div class="w-10 h-10 rounded-full bg-purple-900 bg-opacity-40 flex items-center justify-center mr-3">
+                        <i class="fas fa-question text-purple-400 text-lg"></i>
+                    </div>
+                    <h3 class="text-lg font-semibold text-purple-300">백준허브와 GitHub 연동 시 여러 기기에서 사용할 수 있나요?</h3>
+                </div>
+                <div class="faq-answer pl-14 text-gray-300">
+                    <p>네, 여러 기기에서 백준허브를 사용할 수 있습니다. 각 기기에 백준허브를 설치하고 동일한 GitHub 계정으로 인증하면 됩니다. 이 경우 모든 기기에서의 문제 풀이가 동일한 GitHub 저장소에 기록됩니다.</p>
+                    <div class="bg-gray-900 bg-opacity-50 p-2 rounded mt-2 text-sm">
+                        <p class="text-red-300"><i class="fas fa-exclamation-triangle mr-1"></i> 주의사항:</p>
+                        <p class="text-gray-400">서로 다른 기기에서 동시에 같은 문제를 풀 경우 Git 충돌이 발생할 수 있습니다.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- FAQ Item 4 -->
+            <div class="bg-gray-800 bg-opacity-60 p-5 rounded-xl border border-gray-700 faq-item hover:bg-opacity-80 transition-all duration-300 card-hover">
+                <div class="flex items-center mb-2">
+                    <div class="w-10 h-10 rounded-full bg-yellow-900 bg-opacity-40 flex items-center justify-center mr-3">
+                        <i class="fas fa-question text-yellow-400 text-lg"></i>
+                    </div>
+                    <h3 class="text-lg font-semibold text-yellow-300">Git과 SVN의 차이점은 무엇인가요?</h3>
+                </div>
+                <div class="faq-answer pl-14 text-gray-300">
+                    <div class="grid grid-cols-2 gap-3 text-sm">
+                        <div class="bg-gray-900 bg-opacity-50 p-2 rounded">
+                            <p class="text-blue-300 font-medium mb-1">Git</p>
+                            <ul class="list-disc pl-4 text-gray-400 text-xs space-y-1">
+                                <li>분산형 버전 관리 시스템</li>
+                                <li>전체 리포지토리 복제</li>
+                                <li>오프라인 작업 가능</li>
+                                <li>빠른 브랜칭과 병합</li>
+                            </ul>
+                        </div>
+                        <div class="bg-gray-900 bg-opacity-50 p-2 rounded">
+                            <p class="text-yellow-300 font-medium mb-1">SVN</p>
+                            <ul class="list-disc pl-4 text-gray-400 text-xs space-y-1">
+                                <li>중앙집중식 버전 관리 시스템</li>
+                                <li>일부 파일만 체크아웃 가능</li>
+                                <li>작업에 네트워크 연결 필요</li>
+                                <li>더 단순한 학습 곡선</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- FAQ Item 5 -->
+            <div class="bg-gray-800 bg-opacity-60 p-5 rounded-xl border border-gray-700 faq-item hover:bg-opacity-80 transition-all duration-300 card-hover">
+                <div class="flex items-center mb-2">
+                    <div class="w-10 h-10 rounded-full bg-red-900 bg-opacity-40 flex items-center justify-center mr-3">
+                        <i class="fas fa-question text-red-400 text-lg"></i>
+                    </div>
+                    <h3 class="text-lg font-semibold text-red-300">백준허브의 커밋 메시지 형식을 변경할 수 있나요?</h3>
+                </div>
+                <div class="faq-answer pl-14 text-gray-300">
+                    <p>네, 백준허브의 설정에서 커밋 메시지 템플릿을 사용자 정의할 수 있습니다:</p>
+                    <ol class="list-decimal pl-5 text-sm text-gray-400 space-y-1 mt-2">
+                        <li>백준허브 확장 프로그램 아이콘 클릭</li>
+                        <li>설정(⚙️) 아이콘 클릭</li>
+                        <li>커밋 메시지 템플릿 섹션에서 형식 변경</li>
+                    </ol>
+                    <p class="mt-2 text-sm">다음과 같은 변수를 사용할 수 있습니다: <span class="text-blue-300">{문제번호}</span>, <span class="text-blue-300">{문제이름}</span>, <span class="text-blue-300">{난이도}</span>, <span class="text-blue-300">{언어}</span> 등</p>
+                </div>
+            </div>
+            
+            <!-- FAQ Item 6 -->
+            <div class="bg-gray-800 bg-opacity-60 p-5 rounded-xl border border-gray-700 faq-item hover:bg-opacity-80 transition-all duration-300 card-hover">
+                <div class="flex items-center mb-2">
+                    <div class="w-10 h-10 rounded-full bg-blue-900 bg-opacity-40 flex items-center justify-center mr-3">
+                        <i class="fas fa-question text-blue-400 text-lg"></i>
+                    </div>
+                    <h3 class="text-lg font-semibold text-blue-300">GitHub 리포지토리를 클론할 때 큰 파일이 있으면 어떻게 처리하나요?</h3>
+                </div>
+                <div class="faq-answer pl-14 text-gray-300">
+                    <p class="mb-2">대용량 파일이 있는 리포지토리를 효율적으로 다루기 위해서는 Git LFS(Large File Storage)를 사용하세요:</p>
+                    <div class="bg-gray-900 bg-opacity-50 p-2 rounded text-sm">
+                        <pre class="text-gray-300"><code># Git LFS 설치
+$ git lfs install
+
+# 대용량 파일 추적 설정
+$ git lfs track "*.bin" "*.psd" "*.zip"
+
+# .gitattributes 파일 커밋
+$ git add .gitattributes</code></pre>
+                    </div>
+                    <p class="text-xs text-gray-400 mt-2">이 설정 후 push와 pull 시 해당 확장자의 파일들은 Git LFS를 통해 효율적으로 관리됩니다.</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Additional Resources Section -->
+        <div class="mt-6 bg-gray-800 bg-opacity-60 p-5 rounded-xl border-t border-blue-900 accent-gradient">
+            <h3 class="text-xl font-semibold text-white mb-3">추가 참고 자료</h3>
+            <div class="grid grid-cols-3 gap-4">
+                <a href="https://docs.github.com/ko" class="flex items-center bg-gray-900 bg-opacity-80 p-3 rounded-lg hover:bg-opacity-100 transition-all duration-300">
+                    <i class="fab fa-github text-blue-400 text-xl mr-3"></i>
+                    <span class="text-blue-300 hover:text-blue-200">GitHub 공식 문서</span>
+                </a>
+                <a href="https://git-scm.com/book/ko/v2" class="flex items-center bg-gray-900 bg-opacity-80 p-3 rounded-lg hover:bg-opacity-100 transition-all duration-300">
+                    <i class="fab fa-git-alt text-orange-400 text-xl mr-3"></i>
+                    <span class="text-orange-300 hover:text-orange-200">Pro Git 한글 책</span>
+                </a>
+                <a href="https://github.com/BaekjoonHub/BaekjoonHub" class="flex items-center bg-gray-900 bg-opacity-80 p-3 rounded-lg hover:bg-opacity-100 transition-all duration-300">
+                    <span class="text-indigo-400 font-bold text-xl mr-3">BH</span>
+                    <span class="text-indigo-300 hover:text-indigo-200">백준허브 GitHub</span>
+                </a>
+            </div>
+        </div>
+        
+        <!-- Page number -->
+        <div class="absolute bottom-6 right-8 text-gray-500">
+            22 / 25
+        </div>
+    </div>
+</body>
+</html>

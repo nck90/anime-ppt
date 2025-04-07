@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Git, GitHub 및 백준허브 연동 코테 세팅</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --github-dark: #0d1117;
+            --github-dark-secondary: #161b22;
+            --github-blue: #0366d6;
+            --github-blue-light: #58a6ff;
+            --github-text: #c9d1d9;
+            --github-border: #30363d;
+        }
+        
+        body {
+            font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
+            background-color: var(--github-dark);
+            color: var(--github-text);
+            margin: 0;
+            padding: 0;
+        }
+        
+        .slide-container {
+            width: 1280px;
+            min-height: 720px;
+            margin: 0 auto;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .concept-item {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.6s forwards;
+        }
+        
+        .concept-item:nth-child(1) { animation-delay: 0.2s; }
+        .concept-item:nth-child(2) { animation-delay: 0.4s; }
+        .concept-item:nth-child(3) { animation-delay: 0.6s; }
+        .concept-item:nth-child(4) { animation-delay: 0.8s; }
+        
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .diagram-box {
+            animation: fadeIn 1s ease-in-out 1s forwards;
+            opacity: 0;
+        }
+        
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+        
+        .hexagon {
+            position: absolute;
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+            z-index: -1;
+        }
+        
+        .blob {
+            position: absolute;
+            border-radius: 42% 58% 70% 30% / 45% 45% 55% 55%;
+            z-index: -1;
+        }
+    </style>
+</head>
+<body class="overflow-hidden">
+    <div class="slide-container flex flex-col p-16 relative bg-gradient-to-br from-gray-900 to-black">
+        <!-- Background elements -->
+        <div class="blob bg-blue-900 opacity-5" style="width: 500px; height: 500px; top: -200px; right: -100px;"></div>
+        <div class="hexagon bg-blue-800 opacity-5" style="width: 400px; height: 400px; bottom: -150px; left: -100px;"></div>
+        
+        <!-- Grid pattern -->
+        <div class="absolute inset-0"
+             style="background-image: linear-gradient(var(--github-blue-light) 1px, transparent 1px), linear-gradient(90deg, var(--github-blue-light) 1px, transparent 1px); 
+                    background-size: 40px 40px; background-position: -1px -1px;
+                    opacity: 0.03;">
+        </div>
+        
+        <!-- Title Section -->
+        <div class="mb-8">
+            <h2 class="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-blue-600">Git 개요 및 핵심 개념</h2>
+            <div class="h-1 w-24 bg-blue-500 mt-2"></div>
+        </div>
+        
+        <div class="flex flex-col md:flex-row space-y-8 md:space-y-0 md:space-x-10">
+            <!-- Left Column - Concepts -->
+            <div class="flex-1">
+                <div class="mb-6">
+                    <h3 class="text-2xl font-semibold text-blue-300 mb-3">Git이란?</h3>
+                    <p class="text-gray-300 text-lg">
+                        Git은 <span class="text-blue-300 font-medium">분산 버전 관리 시스템</span>으로, 소프트웨어 개발에서 소스 코드의 변경사항을 추적하고 여러 개발자 간의 협업을 용이하게 합니다.
+                    </p>
+                </div>
+                
+                <h3 class="text-2xl font-semibold text-blue-300 mb-4">Git의 핵심 특징</h3>
+                
+                <div class="space-y-5">
+                    <!-- Feature 1 -->
+                    <div class="flex items-start space-x-3 concept-item">
+                        <div class="flex-shrink-0 w-12 h-12 rounded-lg bg-blue-900 bg-opacity-50 flex items-center justify-center">
+                            <i class="fas fa-code-branch text-blue-400 text-xl"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-xl font-medium text-white">분산 저장소</h4>
+                            <p class="text-gray-400">모든 사용자가 전체 저장소(Repository)의 복사본을 로컬에 가지며, 네트워크 접속 없이도 작업 가능</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Feature 2 -->
+                    <div class="flex items-start space-x-3 concept-item">
+                        <div class="flex-shrink-0 w-12 h-12 rounded-lg bg-green-900 bg-opacity-50 flex items-center justify-center">
+                            <i class="fas fa-history text-green-400 text-xl"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-xl font-medium text-white">스냅샷 기반 버전 관리</h4>
+                            <p class="text-gray-400">변경된 파일만 저장하는 것이 아니라, 특정 시점의 파일 상태 전체를 스냅샷으로 저장</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Feature 3 -->
+                    <div class="flex items-start space-x-3 concept-item">
+                        <div class="flex-shrink-0 w-12 h-12 rounded-lg bg-purple-900 bg-opacity-50 flex items-center justify-center">
+                            <i class="fas fa-bezier-curve text-purple-400 text-xl"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-xl font-medium text-white">브랜치 기능</h4>
+                            <p class="text-gray-400">가볍고 빠른 브랜치 전환으로 다양한 작업을 동시에 진행하고 쉽게 병합 가능</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Feature 4 -->
+                    <div class="flex items-start space-x-3 concept-item">
+                        <div class="flex-shrink-0 w-12 h-12 rounded-lg bg-red-900 bg-opacity-50 flex items-center justify-center">
+                            <i class="fas fa-fingerprint text-red-400 text-xl"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-xl font-medium text-white">데이터 무결성</h4>
+                            <p class="text-gray-400">SHA-1 해시를 통한 체크섬으로 모든 파일과 커밋의 무결성 보장</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Right Column - Diagram -->
+            <div class="flex-1 diagram-box">
+                <div class="bg-gray-800 bg-opacity-60 p-6 rounded-xl border border-gray-700">
+                    <h3 class="text-2xl font-semibold text-blue-300 mb-4">Git 기본 흐름</h3>
+                    <div class="relative h-96">
+                        <!-- Diagram illustration -->
+                        <div class="absolute inset-0 flex flex-col items-center justify-center">
+                            <!-- Working Directory -->
+                            <div class="relative mb-8">
+                                <div class="w-64 h-24 rounded-lg bg-gray-700 flex items-center justify-center">
+                                    <div class="text-center">
+                                        <div class="text-xl font-medium text-white">Working Directory</div>
+                                        <div class="text-sm text-gray-400">작업 디렉토리</div>
+                                    </div>
+                                </div>
+                                <div class="absolute -bottom-6 left-1/2 transform -translate-x-1/2">
+                                    <div class="px-4 py-1 rounded bg-gray-900 text-blue-400 text-sm font-medium">
+                                        git add
+                                    </div>
+                                    <div class="w-0.5 h-4 bg-blue-500 mx-auto"></div>
+                                </div>
+                            </div>
+                            
+                            <!-- Staging Area -->
+                            <div class="relative mb-8">
+                                <div class="w-64 h-24 rounded-lg bg-blue-900 bg-opacity-30 flex items-center justify-center border border-blue-800">
+                                    <div class="text-center">
+                                        <div class="text-xl font-medium text-white">Staging Area</div>
+                                        <div class="text-sm text-gray-400">인덱스</div>
+                                    </div>
+                                </div>
+                                <div class="absolute -bottom-6 left-1/2 transform -translate-x-1/2">
+                                    <div class="px-4 py-1 rounded bg-gray-900 text-green-400 text-sm font-medium">
+                                        git commit
+                                    </div>
+                                    <div class="w-0.5 h-4 bg-green-500 mx-auto"></div>
+                                </div>
+                            </div>
+                            
+                            <!-- Git Repository -->
+                            <div class="relative">
+                                <div class="w-64 h-24 rounded-lg bg-green-900 bg-opacity-30 flex items-center justify-center border border-green-800">
+                                    <div class="text-center">
+                                        <div class="text-xl font-medium text-white">Git Repository</div>
+                                        <div class="text-sm text-gray-400">.git 디렉토리</div>
+                                    </div>
+                                </div>
+                                <div class="absolute -bottom-8 left-1/2 transform -translate-x-1/2 w-full">
+                                    <div class="flex justify-around">
+                                        <div class="text-center">
+                                            <div class="px-3 py-1 rounded bg-gray-900 text-purple-400 text-sm font-medium">
+                                                git push
+                                            </div>
+                                            <div class="w-0.5 h-4 bg-purple-500 mx-auto"></div>
+                                        </div>
+                                        <div class="text-center">
+                                            <div class="px-3 py-1 rounded bg-gray-900 text-yellow-400 text-sm font-medium">
+                                                git pull
+                                            </div>
+                                            <div class="w-0.5 h-4 bg-yellow-500 mx-auto"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Page number -->
+        <div class="absolute bottom-6 right-8 text-gray-500">
+            3 / 25
+        </div>
+    </div>
+</body>
+</html>

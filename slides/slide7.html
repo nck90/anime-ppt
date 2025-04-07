@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Git, GitHub 및 백준허브 연동 코테 세팅</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --github-dark: #0d1117;
+            --github-dark-secondary: #161b22;
+            --github-blue: #0366d6;
+            --github-blue-light: #58a6ff;
+            --github-text: #c9d1d9;
+            --github-border: #30363d;
+        }
+        
+        body {
+            font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
+            background-color: var(--github-dark);
+            color: var(--github-text);
+            margin: 0;
+            padding: 0;
+        }
+        
+        .slide-container {
+            width: 1280px;
+            min-height: 720px;
+            margin: 0 auto;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .step-item {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.6s forwards;
+        }
+        
+        .step-item:nth-child(1) { animation-delay: 0.2s; }
+        .step-item:nth-child(2) { animation-delay: 0.4s; }
+        .step-item:nth-child(3) { animation-delay: 0.6s; }
+        .step-item:nth-child(4) { animation-delay: 0.8s; }
+        
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .interface-preview {
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 0.8s forwards 1s;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(8, 83, 156, 0.2);
+        }
+        
+        .hexagon {
+            position: absolute;
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+            z-index: -1;
+        }
+        
+        .blob {
+            position: absolute;
+            border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+            z-index: -1;
+        }
+        
+        .step-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background-color: rgba(88, 166, 255, 0.2);
+            color: var(--github-blue-light);
+            font-weight: bold;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body class="overflow-hidden">
+    <div class="slide-container flex flex-col p-16 relative bg-gradient-to-br from-gray-900 to-black">
+        <!-- Background elements -->
+        <div class="blob bg-blue-900 opacity-5" style="width: 600px; height: 600px; top: -200px; right: -200px;"></div>
+        <div class="hexagon bg-purple-800 opacity-5" style="width: 400px; height: 400px; bottom: -150px; left: -100px;"></div>
+        
+        <!-- Grid pattern -->
+        <div class="absolute inset-0"
+             style="background-image: linear-gradient(var(--github-blue-light) 1px, transparent 1px), linear-gradient(90deg, var(--github-blue-light) 1px, transparent 1px); 
+                    background-size: 40px 40px; background-position: -1px -1px;
+                    opacity: 0.03;">
+        </div>
+        
+        <!-- Title Section -->
+        <div class="mb-8">
+            <h2 class="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500">GitHub 리포지토리 생성하기</h2>
+            <div class="h-1 w-28 bg-blue-500 mt-2"></div>
+            <p class="text-gray-400 mt-2">프로젝트를 관리하고 공유하기 위한 첫 단계</p>
+        </div>
+        
+        <div class="flex gap-10">
+            <!-- Left Column - Steps -->
+            <div class="w-5/12">
+                <div class="space-y-6">
+                    <!-- Step 1 -->
+                    <div class="bg-gray-800 bg-opacity-50 p-5 rounded-lg border-l-4 border-blue-500 step-item transition-all duration-300 card-hover">
+                        <h3 class="text-xl font-semibold text-blue-300 mb-3 flex items-center">
+                            <span class="step-number">1</span>
+                            리포지토리 생성 버튼 클릭
+                        </h3>
+                        <p class="text-gray-300">
+                            GitHub 홈페이지 우측 상단의 '+' 버튼을 클릭한 후 'New repository'를 선택합니다.
+                        </p>
+                        <div class="bg-gray-900 bg-opacity-70 p-3 rounded mt-3 text-sm">
+                            <div class="flex items-center text-gray-400">
+                                <i class="fas fa-lightbulb text-yellow-400 mr-2"></i>
+                                GitHub에 가입하고 로그인한 상태에서 진행해주세요.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Step 2 -->
+                    <div class="bg-gray-800 bg-opacity-50 p-5 rounded-lg border-l-4 border-green-500 step-item transition-all duration-300 card-hover">
+                        <h3 class="text-xl font-semibold text-green-300 mb-3 flex items-center">
+                            <span class="step-number">2</span>
+                            리포지토리 정보 입력
+                        </h3>
+                        <p class="text-gray-300 mb-3">
+                            리포지토리 이름, 설명, 공개 여부 등 기본 정보를 설정합니다.
+                        </p>
+                        <div class="space-y-2">
+                            <div class="flex items-start">
+                                <div class="w-32 text-sm text-gray-400 pt-1">Repository name:</div>
+                                <div class="text-blue-300">my-project</div>
+                            </div>
+                            <div class="flex items-start">
+                                <div class="w-32 text-sm text-gray-400 pt-1">Description:</div>
+                                <div class="text-gray-300">My first GitHub project</div>
+                            </div>
+                            <div class="flex items-start">
+                                <div class="w-32 text-sm text-gray-400 pt-1">Visibility:</div>
+                                <div class="text-gray-300">Public / Private</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Step 3 -->
+                    <div class="bg-gray-800 bg-opacity-50 p-5 rounded-lg border-l-4 border-purple-500 step-item transition-all duration-300 card-hover">
+                        <h3 class="text-xl font-semibold text-purple-300 mb-3 flex items-center">
+                            <span class="step-number">3</span>
+                            초기화 옵션 설정
+                        </h3>
+                        <p class="text-gray-300 mb-3">
+                            README 파일, .gitignore, 라이선스 등의 초기 파일을 포함할지 선택합니다.
+                        </p>
+                        <div class="bg-gray-900 p-3 rounded flex items-center">
+                            <input type="checkbox" checked class="h-4 w-4 mr-3 bg-gray-700 border-gray-600 rounded focus:ring-blue-500">
+                            <div>
+                                <div class="text-white">README 파일 추가</div>
+                                <div class="text-xs text-gray-400">프로젝트 설명을 위한 기본 문서</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Step 4 -->
+                    <div class="bg-gray-800 bg-opacity-50 p-5 rounded-lg border-l-4 border-yellow-500 step-item transition-all duration-300 card-hover">
+                        <h3 class="text-xl font-semibold text-yellow-300 mb-3 flex items-center">
+                            <span class="step-number">4</span>
+                            리포지토리 생성 완료
+                        </h3>
+                        <p class="text-gray-300">
+                            'Create repository' 버튼을 클릭하여 생성을 완료합니다. 이제 코드를 푸시하거나 파일을 추가할 수 있습니다.
+                        </p>
+                        <div class="flex space-x-3 mt-3">
+                            <div class="px-4 py-2 bg-green-700 text-white rounded-md text-sm inline-flex items-center">
+                                <i class="fas fa-plus mr-2"></i>
+                                Create repository
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Right Column - Visual Preview -->
+            <div class="w-7/12 interface-preview">
+                <div class="bg-gray-800 bg-opacity-60 p-6 rounded-xl border border-gray-700 h-full">
+                    <h3 class="text-2xl font-semibold text-blue-300 mb-5">리포지토리 생성 화면</h3>
+                    
+                    <div class="bg-gray-900 rounded-lg border border-gray-700 shadow-lg overflow-hidden">
+                        <!-- Fake GitHub Header -->
+                        <div class="bg-gray-800 border-b border-gray-700 p-3 flex items-center">
+                            <i class="fab fa-github text-xl text-white mr-3"></i>
+                            <span class="text-sm text-gray-300">Create a new repository</span>
+                        </div>
+                        
+                        <!-- Form Content -->
+                        <div class="p-6">
+                            <div class="mb-6">
+                                <h4 class="text-lg font-medium text-white mb-1">Repository name <span class="text-red-400">*</span></h4>
+                                <div class="flex items-center">
+                                    <span class="text-gray-400 text-sm mr-2">username /</span>
+                                    <div class="bg-gray-800 border border-gray-600 rounded-md py-2 px-3 text-gray-300 flex-grow">
+                                        my-project
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-6">
+                                <h4 class="text-lg font-medium text-white mb-1">Description <span class="text-gray-500">(optional)</span></h4>
+                                <div class="bg-gray-800 border border-gray-600 rounded-md py-2 px-3 text-gray-300">
+                                    My first GitHub project
+                                </div>
+                            </div>
+                            
+                            <div class="mb-6">
+                                <h4 class="text-lg font-medium text-white mb-3">Visibility</h4>
+                                <div class="space-y-3">
+                                    <!-- Public Option -->
+                                    <div class="flex items-start p-3 bg-gray-800 border border-gray-600 rounded-md">
+                                        <input type="radio" checked class="mt-1 h-4 w-4 mr-3 bg-gray-700 border-gray-600 rounded-full focus:ring-blue-500">
+                                        <div>
+                                            <div class="flex items-center">
+                                                <i class="fas fa-globe-americas text-gray-400 mr-2"></i>
+                                                <span class="font-medium text-white">Public</span>
+                                            </div>
+                                            <div class="text-sm text-gray-400 mt-1">
+                                                Anyone on the internet can see this repository.
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Private Option -->
+                                    <div class="flex items-start p-3 bg-gray-800 border border-gray-600 rounded-md">
+                                        <input type="radio" class="mt-1 h-4 w-4 mr-3 bg-gray-700 border-gray-600 rounded-full focus:ring-blue-500">
+                                        <div>
+                                            <div class="flex items-center">
+                                                <i class="fas fa-lock text-gray-400 mr-2"></i>
+                                                <span class="font-medium text-white">Private</span>
+                                            </div>
+                                            <div class="text-sm text-gray-400 mt-1">
+                                                You choose who can see and commit to this repository.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-6">
+                                <h4 class="text-lg font-medium text-white mb-3">Initialize this repository with:</h4>
+                                <div class="space-y-3">
+                                    <!-- README Option -->
+                                    <div class="flex items-center p-3 bg-gray-800 border border-blue-500 rounded-md">
+                                        <input type="checkbox" checked class="h-4 w-4 mr-3 bg-gray-700 border-gray-600 rounded focus:ring-blue-500">
+                                        <div>
+                                            <div class="font-medium text-white">Add a README file</div>
+                                            <div class="text-sm text-gray-400">
+                                                This is where you can write a long description for your project.
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- .gitignore Option -->
+                                    <div class="flex items-center p-3 bg-gray-800 border border-gray-600 rounded-md">
+                                        <input type="checkbox" class="h-4 w-4 mr-3 bg-gray-700 border-gray-600 rounded focus:ring-blue-500">
+                                        <div>
+                                            <div class="font-medium text-white">Add .gitignore</div>
+                                            <div class="text-sm text-gray-400">
+                                                Choose which files not to track from a list of templates.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="mt-8 flex justify-end">
+                                <button class="bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-md">
+                                    Create repository
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Pro tip -->
+        <div class="mt-auto py-3 px-5 bg-gray-800 bg-opacity-50 rounded-lg inline-block self-start">
+            <p class="text-gray-300 flex items-center text-sm">
+                <i class="fas fa-lightbulb text-yellow-400 mr-2"></i>
+                <strong>Pro Tip:</strong>&nbsp;
+                <span class="text-gray-400">README.md 파일은 마크다운(Markdown) 형식으로 작성되며, 프로젝트 설명, 설치 방법, 사용법 등을 기록하는 데 매우 유용합니다.</span>
+            </p>
+        </div>
+        
+        <!-- Page number -->
+        <div class="absolute bottom-6 right-8 text-gray-500">
+            7 / 25
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Git, GitHub 및 백준허브 연동 코테 세팅</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --github-dark: #0d1117;
+            --github-dark-secondary: #161b22;
+            --github-blue: #0366d6;
+            --github-blue-light: #58a6ff;
+            --github-text: #c9d1d9;
+            --github-border: #30363d;
+        }
+        
+        body {
+            font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
+            background-color: var(--github-dark);
+            color: var(--github-text);
+            margin: 0;
+            padding: 0;
+        }
+        
+        .slide-container {
+            width: 1280px;
+            min-height: 720px;
+            margin: 0 auto;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .step-item {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.6s forwards;
+        }
+        
+        .step-item:nth-child(1) { animation-delay: 0.2s; }
+        .step-item:nth-child(2) { animation-delay: 0.4s; }
+        .step-item:nth-child(3) { animation-delay: 0.6s; }
+        .step-item:nth-child(4) { animation-delay: 0.8s; }
+        
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .step-screenshot {
+            opacity: 0;
+            transform: translateX(30px);
+            animation: slideIn 0.6s forwards;
+        }
+        
+        .step-screenshot:nth-child(1) { animation-delay: 0.3s; }
+        .step-screenshot:nth-child(2) { animation-delay: 0.5s; }
+        .step-screenshot:nth-child(3) { animation-delay: 0.7s; }
+        .step-screenshot:nth-child(4) { animation-delay: 0.9s; }
+        
+        @keyframes slideIn {
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        .pulse-animation {
+            animation: pulse 2s infinite alternate;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4); }
+            100% { transform: scale(1.02); box-shadow: 0 0 10px 3px rgba(59, 130, 246, 0.6); }
+        }
+        
+        .hexagon {
+            position: absolute;
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+            z-index: -1;
+        }
+        
+        .step-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background-color: rgba(88, 166, 255, 0.2);
+            color: var(--github-blue-light);
+            font-weight: bold;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body class="overflow-hidden">
+    <div class="slide-container flex flex-col p-16 relative bg-gradient-to-br from-gray-900 to-black">
+        <!-- Background elements -->
+        <div class="hexagon bg-blue-900 opacity-5" style="width: 500px; height: 500px; top: -200px; right: -100px;"></div>
+        <div class="hexagon bg-indigo-800 opacity-5" style="width: 400px; height: 400px; bottom: -150px; left: -100px;"></div>
+        
+        <!-- Grid pattern -->
+        <div class="absolute inset-0"
+             style="background-image: linear-gradient(var(--github-blue-light) 1px, transparent 1px), linear-gradient(90deg, var(--github-blue-light) 1px, transparent 1px); 
+                    background-size: 40px 40px; background-position: -1px -1px;
+                    opacity: 0.03;">
+        </div>
+        
+        <!-- Title Section -->
+        <div class="mb-8">
+            <h2 class="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-indigo-500">백준허브 설치하기</h2>
+            <div class="h-1 w-28 bg-blue-500 mt-2"></div>
+            <p class="text-gray-400 mt-2">크롬 확장 프로그램으로 간편하게 설치하고 GitHub와 연동하기</p>
+        </div>
+        
+        <div class="flex gap-8">
+            <!-- Left Column - Steps -->
+            <div class="w-5/12">
+                <div class="space-y-6">
+                    <!-- Step 1 -->
+                    <div class="bg-gray-800 bg-opacity-50 p-5 rounded-lg border-l-4 border-blue-500 step-item hover:bg-gray-800 transition-all duration-300">
+                        <h3 class="text-xl font-semibold text-blue-300 mb-3 flex items-center">
+                            <span class="step-number">1</span>
+                            크롬 웹 스토어 방문하기
+                        </h3>
+                        <p class="text-gray-300">
+                            Chrome 웹 스토어에서 <span class="text-blue-300 font-medium">"BaekjoonHub"</span> 또는 <span class="text-blue-300 font-medium">"백준허브"</span>를 검색하세요.
+                        </p>
+                        <div class="mt-2 flex">
+                            <a href="https://chrome.google.com/webstore/detail/백준허브/ccammcjdkpgjmcpijpahlehmapgmphmk" target="_blank" class="inline-flex items-center px-3 py-2 bg-blue-700 text-white text-sm rounded-md hover:bg-blue-600 transition-colors">
+                                <i class="fab fa-chrome mr-2"></i>
+                                크롬 웹 스토어 바로가기
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <!-- Step 2 -->
+                    <div class="bg-gray-800 bg-opacity-50 p-5 rounded-lg border-l-4 border-green-500 step-item hover:bg-gray-800 transition-all duration-300">
+                        <h3 class="text-xl font-semibold text-green-300 mb-3 flex items-center">
+                            <span class="step-number">2</span>
+                            확장 프로그램 설치하기
+                        </h3>
+                        <p class="text-gray-300">
+                            백준허브 확장 프로그램 페이지에서 <span class="text-green-300 font-medium">"Chrome에 추가"</span> 버튼을 클릭하여 설치합니다.
+                        </p>
+                        <div class="bg-gray-900 bg-opacity-70 p-3 rounded mt-3 text-sm">
+                            <div class="flex items-start">
+                                <i class="fas fa-lightbulb text-yellow-400 mr-2 mt-1"></i>
+                                <div class="text-gray-400">
+                                    설치 후 브라우저 상단의 확장 프로그램 아이콘이 보입니다. 아이콘을 고정하면 더 편리하게 사용할 수 있습니다.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Step 3 -->
+                    <div class="bg-gray-800 bg-opacity-50 p-5 rounded-lg border-l-4 border-purple-500 step-item hover:bg-gray-800 transition-all duration-300">
+                        <h3 class="text-xl font-semibold text-purple-300 mb-3 flex items-center">
+                            <span class="step-number">3</span>
+                            GitHub 계정 연동하기
+                        </h3>
+                        <p class="text-gray-300 mb-3">
+                            확장 프로그램 아이콘을 클릭하고 <span class="text-purple-300 font-medium">"Authenticate"</span> 버튼을 눌러 GitHub 계정을 연동합니다.
+                        </p>
+                        <div class="space-y-2 text-sm">
+                            <div class="flex items-center text-gray-400">
+                                <i class="fas fa-check-circle text-purple-400 mr-2"></i>
+                                GitHub에 로그인하여 인증을 완료합니다.
+                            </div>
+                            <div class="flex items-center text-gray-400">
+                                <i class="fas fa-check-circle text-purple-400 mr-2"></i>
+                                <span class="text-white">"Authorize BaekjoonHub"</span> 버튼을 클릭하여 권한을 부여합니다.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Step 4 -->
+                    <div class="bg-gray-800 bg-opacity-50 p-5 rounded-lg border-l-4 border-yellow-500 step-item hover:bg-gray-800 transition-all duration-300">
+                        <h3 class="text-xl font-semibold text-yellow-300 mb-3 flex items-center">
+                            <span class="step-number">4</span>
+                            리포지토리 설정하기
+                        </h3>
+                        <p class="text-gray-300 mb-3">
+                            GitHub 인증 후 자동으로 리포지토리를 생성하거나 기존 리포지토리를 선택할 수 있습니다.
+                        </p>
+                        <div class="bg-gray-900 bg-opacity-70 p-3 rounded text-sm">
+                            <div class="flex items-start">
+                                <i class="fas fa-info-circle text-blue-400 mr-2 mt-1"></i>
+                                <div class="text-gray-400">
+                                    백준과 프로그래머스 문제는 각각 다른 리포지토리에 자동으로 저장됩니다. 필요에 따라 리포지토리 설정을 변경할 수 있습니다.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Right Column - Screenshots -->
+            <div class="w-7/12">
+                <div class="bg-gray-800 bg-opacity-60 p-6 rounded-xl border border-gray-700 h-full">
+                    <h3 class="text-2xl font-semibold text-blue-300 mb-5">설치 및 설정 과정</h3>
+                    
+                    <div class="grid grid-cols-2 gap-4">
+                        <!-- Screenshot 1: Chrome Web Store -->
+                        <div class="bg-gray-900 rounded-lg border border-gray-700 overflow-hidden shadow-lg step-screenshot">
+                            <div class="bg-gray-800 border-b border-gray-700 p-2">
+                                <div class="flex items-center">
+                                    <div class="w-3 h-3 bg-red-500 rounded-full mr-2"></div>
+                                    <div class="w-3 h-3 bg-yellow-500 rounded-full mr-2"></div>
+                                    <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                                    <div class="mx-auto text-xs text-gray-400">Chrome 웹 스토어</div>
+                                </div>
+                            </div>
+                            <div class="p-3">
+                                <div class="flex items-center mb-3">
+                                    <div class="w-10 h-10 bg-blue-700 rounded flex items-center justify-center mr-3">
+                                        <span class="text-white font-bold">BH</span>
+                                    </div>
+                                    <div>
+                                        <div class="text-white font-medium">백준허브</div>
+                                        <div class="text-xs text-gray-400">코딩테스트 문제 자동 커밋</div>
+                                    </div>
+                                </div>
+                                <div class="flex justify-center mt-3">
+                                    <button class="bg-blue-600 hover:bg-blue-500 text-white py-1.5 px-4 rounded pulse-animation">
+                                        Chrome에 추가
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Screenshot 2: Extension Icon -->
+                        <div class="bg-gray-900 rounded-lg border border-gray-700 overflow-hidden shadow-lg step-screenshot">
+                            <div class="bg-gray-800 border-b border-gray-700 p-2">
+                                <div class="flex items-center">
+                                    <div class="w-3 h-3 bg-red-500 rounded-full mr-2"></div>
+                                    <div class="w-3 h-3 bg-yellow-500 rounded-full mr-2"></div>
+                                    <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                                    <div class="mx-auto text-xs text-gray-400">Chrome 브라우저</div>
+                                </div>
+                            </div>
+                            <div class="p-3">
+                                <div class="bg-gray-800 rounded border border-gray-700 p-2 mb-3">
+                                    <div class="flex items-center">
+                                        <div class="flex-grow text-gray-400 text-xs">주소창</div>
+                                        <div class="flex space-x-2">
+                                            <div class="w-6 h-6 bg-gray-700 rounded flex items-center justify-center">
+                                                <i class="fas fa-cog text-gray-400 text-xs"></i>
+                                            </div>
+                                            <div class="w-6 h-6 bg-blue-700 rounded flex items-center justify-center pulse-animation">
+                                                <span class="text-white font-bold text-xs">BH</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="text-xs text-gray-400 text-center">
+                                    설치 후 확장 프로그램 아이콘이 표시됩니다.<br>
+                                    핀 버튼을 클릭하여 항상 표시되도록 설정하세요.
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Screenshot 3: Authentication -->
+                        <div class="bg-gray-900 rounded-lg border border-gray-700 overflow-hidden shadow-lg step-screenshot">
+                            <div class="bg-gray-800 border-b border-gray-700 p-2">
+                                <div class="flex items-center">
+                                    <div class="w-3 h-3 bg-red-500 rounded-full mr-2"></div>
+                                    <div class="w-3 h-3 bg-yellow-500 rounded-full mr-2"></div>
+                                    <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                                    <div class="mx-auto text-xs text-gray-400">백준허브 인증</div>
+                                </div>
+                            </div>
+                            <div class="p-4 flex flex-col items-center">
+                                <div class="w-14 h-14 bg-blue-700 rounded-lg flex items-center justify-center mb-3">
+                                    <span class="text-white font-bold text-2xl">BH</span>
+                                </div>
+                                <div class="text-center mb-3">
+                                    <div class="text-white font-medium mb-1">백준허브</div>
+                                    <div class="text-xs text-gray-400">GitHub 계정 연동이 필요합니다</div>
+                                </div>
+                                <button class="bg-green-600 hover:bg-green-500 text-white py-1.5 px-4 rounded mt-2 pulse-animation">
+                                    Authenticate
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- Screenshot 4: GitHub Authorization -->
+                        <div class="bg-gray-900 rounded-lg border border-gray-700 overflow-hidden shadow-lg step-screenshot">
+                            <div class="bg-gray-800 border-b border-gray-700 p-2">
+                                <div class="flex items-center">
+                                    <div class="w-3 h-3 bg-red-500 rounded-full mr-2"></div>
+                                    <div class="w-3 h-3 bg-yellow-500 rounded-full mr-2"></div>
+                                    <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                                    <div class="mx-auto text-xs text-gray-400">GitHub 인증</div>
+                                </div>
+                            </div>
+                            <div class="p-3">
+                                <div class="flex items-center mb-3">
+                                    <i class="fab fa-github text-white text-2xl mr-3"></i>
+                                    <div class="text-white">GitHub 인증</div>
+                                </div>
+                                <div class="bg-gray-800 p-2 rounded border border-gray-700 mb-3">
+                                    <div class="text-sm text-gray-300 mb-1">백준허브가 다음 권한을 요청합니다:</div>
+                                    <div class="text-xs text-gray-400">✓ 공개 저장소 액세스</div>
+                                    <div class="text-xs text-gray-400">✓ 코드 푸시/커밋 권한</div>
+                                </div>
+                                <div class="flex justify-end">
+                                    <button class="bg-green-600 hover:bg-green-500 text-white py-1.5 px-3 text-sm rounded pulse-animation">
+                                        Authorize BaekjoonHub
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Success Message -->
+                    <div class="bg-green-900 bg-opacity-30 border border-green-800 rounded-lg p-4 mt-5 flex items-center">
+                        <div class="bg-green-800 rounded-full p-2 mr-4">
+                            <i class="fas fa-check text-green-200 text-lg"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-green-300 font-medium">설치 완료!</h4>
+                            <p class="text-gray-300 text-sm">
+                                이제 백준이나 프로그래머스에서 문제를 풀면 자동으로 GitHub에 코드가 저장됩니다.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Pro tip -->
+        <div class="mt-auto py-3 px-5 bg-gray-800 bg-opacity-50 rounded-lg inline-block self-start">
+            <p class="text-gray-300 flex items-center text-sm">
+                <i class="fas fa-lightbulb text-yellow-400 mr-2"></i>
+                <strong>Pro Tip:</strong>&nbsp;
+                <span class="text-gray-400">백준허브가 올바르게 작동하려면 solved.ac 연동이 필요합니다. 백준 사이트의 설정에서 solved.ac 연동을 활성화하세요.</span>
+            </p>
+        </div>
+        
+        <!-- Page number -->
+        <div class="absolute bottom-6 right-8 text-gray-500">
+            10 / 25
+        </div>
+    </div>
+</body>
+</html>

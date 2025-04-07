@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Presentation</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: #000;
+            min-height: 100vh;
+        }
+        #slide-container {
+            width: 100%;
+            min-height: 100vh;
+            position: relative;
+        }
+        #slide-container > * {
+            width: 100%;
+            min-height: 100vh;
+        }
+    </style>
+</head>
+<body>
+    <div id="slide-container"></div>
+
+    <script>
+        // 현재 슬라이드 번호를 URL에서 가져오기
+        const urlParams = new URLSearchParams(window.location.search);
+        let currentSlide = parseInt(urlParams.get('slide')) || 1;
+        const totalSlides = 25;
+
+        // 슬라이드 로드 함수
+        function loadSlide(slideNumber) {
+            if (slideNumber < 1 || slideNumber > totalSlides) return;
+            
+            // URL 업데이트
+            const newUrl = `/slide${slideNumber}`;
+            window.history.pushState({ slide: slideNumber }, '', newUrl);
+            
+            // 슬라이드 로드
+            fetch(`/slide${slideNumber}.html`)
+                .then(response => response.text())
+                .then(html => {
+                    document.getElementById('slide-container').innerHTML = html;
+                });
+        }
+
+        // 키보드 이벤트 처리
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') {
+                if (currentSlide < totalSlides) {
+                    currentSlide++;
+                    loadSlide(currentSlide);
+                }
+            } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+                if (currentSlide > 1) {
+                    currentSlide--;
+                    loadSlide(currentSlide);
+                }
+            }
+        });
+
+        // 브라우저 뒤로가기/앞으로가기 처리
+        window.addEventListener('popstate', (event) => {
+            if (event.state && event.state.slide) {
+                currentSlide = event.state.slide;
+                loadSlide(currentSlide);
+            }
+        });
+
+        // 초기 슬라이드 로드
+        loadSlide(currentSlide);
+    </script>
+</body>
+</html>

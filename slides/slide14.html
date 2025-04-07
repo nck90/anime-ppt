@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Git, GitHub 및 백준허브 연동 코테 세팅</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --github-dark: #0d1117;
+            --github-dark-secondary: #161b22;
+            --github-blue: #0366d6;
+            --github-blue-light: #58a6ff;
+            --github-text: #c9d1d9;
+            --github-border: #30363d;
+        }
+        
+        body {
+            font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
+            background-color: var(--github-dark);
+            color: var(--github-text);
+            margin: 0;
+            padding: 0;
+        }
+        
+        .slide-container {
+            width: 1280px;
+            min-height: 720px;
+            margin: 0 auto;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .issue-item {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.6s forwards;
+        }
+        
+        .issue-item:nth-child(1) { animation-delay: 0.2s; }
+        .issue-item:nth-child(2) { animation-delay: 0.4s; }
+        .issue-item:nth-child(3) { animation-delay: 0.6s; }
+        .issue-item:nth-child(4) { animation-delay: 0.8s; }
+        
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .solution-card {
+            opacity: 0;
+            transform: translateX(30px);
+            animation: slideIn 0.8s forwards;
+        }
+        
+        .solution-card:nth-child(1) { animation-delay: 0.3s; }
+        .solution-card:nth-child(2) { animation-delay: 0.5s; }
+        .solution-card:nth-child(3) { animation-delay: 0.7s; }
+        .solution-card:nth-child(4) { animation-delay: 0.9s; }
+        
+        @keyframes slideIn {
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        .hexagon {
+            position: absolute;
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+            z-index: -1;
+        }
+        
+        .pulse-animation {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(88, 166, 255, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(88, 166, 255, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(88, 166, 255, 0); }
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(8, 83, 156, 0.2);
+            transition: all 0.3s ease;
+        }
+    </style>
+</head>
+<body class="overflow-hidden">
+    <div class="slide-container flex flex-col p-16 relative bg-gradient-to-br from-gray-900 to-black">
+        <!-- Background elements -->
+        <div class="hexagon bg-blue-900 opacity-5" style="width: 500px; height: 500px; top: -150px; right: -100px;"></div>
+        <div class="hexagon bg-indigo-800 opacity-5" style="width: 400px; height: 400px; bottom: -150px; left: -100px;"></div>
+        
+        <!-- Grid pattern -->
+        <div class="absolute inset-0"
+             style="background-image: linear-gradient(var(--github-blue-light) 1px, transparent 1px), linear-gradient(90deg, var(--github-blue-light) 1px, transparent 1px); 
+                    background-size: 40px 40px; background-position: -1px -1px;
+                    opacity: 0.03;">
+        </div>
+        
+        <!-- Title Section -->
+        <div class="mb-8">
+            <h2 class="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-indigo-500">문제 해결과 팁</h2>
+            <div class="h-1 w-28 bg-blue-500 mt-2"></div>
+            <p class="text-gray-400 mt-2">Git, GitHub 및 백준허브 사용 시 발생할 수 있는 문제와 해결책</p>
+        </div>
+        
+        <div class="flex gap-8">
+            <!-- Left Column - Common Issues -->
+            <div class="w-5/12">
+                <div class="space-y-5">
+                    <!-- Issue 1 -->
+                    <div class="bg-gray-800 bg-opacity-50 p-5 rounded-lg border-l-4 border-red-500 issue-item hover:bg-opacity-70 transition-all duration-300">
+                        <h3 class="text-xl font-semibold text-red-300 mb-3">1. 자동 커밋이 작동하지 않음</h3>
+                        <p class="text-gray-300 mb-2">
+                            백준허브가 설치되었지만 문제 해결 후 GitHub에 자동으로 커밋되지 않는 경우가 있습니다.
+                        </p>
+                        <div class="bg-red-900 bg-opacity-20 p-2 rounded-md border border-red-800 text-sm">
+                            <div class="flex items-start">
+                                <i class="fas fa-exclamation-triangle text-red-400 mt-1 mr-2"></i>
+                                <span class="text-gray-300">GitHub 인증 만료, 백준 웹사이트 구조 변경, solved.ac 연동 문제가 주요 원인입니다.</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Issue 2 -->
+                    <div class="bg-gray-800 bg-opacity-50 p-5 rounded-lg border-l-4 border-yellow-500 issue-item hover:bg-opacity-70 transition-all duration-300">
+                        <h3 class="text-xl font-semibold text-yellow-300 mb-3">2. Git 충돌 문제</h3>
+                        <p class="text-gray-300 mb-2">
+                            여러 디바이스에서 작업하거나 수동으로 리포지토리를 수정할 때 충돌이 발생할 수 있습니다.
+                        </p>
+                        <div class="bg-yellow-900 bg-opacity-20 p-2 rounded-md border border-yellow-800 text-sm">
+                            <div class="flex items-start">
+                                <i class="fas fa-code-branch text-yellow-400 mt-1 mr-2"></i>
+                                <span class="text-gray-300">동일한 문제를 여러 번 해결하거나, 로컬에서 수정 후 백준허브와 충돌 시 발생합니다.</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Issue 3 -->
+                    <div class="bg-gray-800 bg-opacity-50 p-5 rounded-lg border-l-4 border-purple-500 issue-item hover:bg-opacity-70 transition-all duration-300">
+                        <h3 class="text-xl font-semibold text-purple-300 mb-3">3. 백준허브 설정 초기화</h3>
+                        <p class="text-gray-300 mb-2">
+                            브라우저 캐시 삭제, 확장 프로그램 업데이트 등으로 백준허브 설정이 초기화될 수 있습니다.
+                        </p>
+                        <div class="bg-purple-900 bg-opacity-20 p-2 rounded-md border border-purple-800 text-sm">
+                            <div class="flex items-start">
+                                <i class="fas fa-sync-alt text-purple-400 mt-1 mr-2"></i>
+                                <span class="text-gray-300">커스텀 설정, 연결된 리포지토리 정보, 커밋 메시지 템플릿 등이 기본값으로 돌아갑니다.</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Issue 4 -->
+                    <div class="bg-gray-800 bg-opacity-50 p-5 rounded-lg border-l-4 border-blue-500 issue-item hover:bg-opacity-70 transition-all duration-300">
+                        <h3 class="text-xl font-semibold text-blue-300 mb-3">4. 프로그래머스 연동 문제</h3>
+                        <p class="text-gray-300 mb-2">
+                            프로그래머스의 경우 인터페이스 변경이나 문제 형식에 따라 백준허브가 제대로 인식하지 못하는 경우가 있습니다.
+                        </p>
+                        <div class="bg-blue-900 bg-opacity-20 p-2 rounded-md border border-blue-800 text-sm">
+                            <div class="flex items-start">
+                                <i class="fas fa-bug text-blue-400 mt-1 mr-2"></i>
+                                <span class="text-gray-300">특히 SQL, 그래프 유형의 문제나 새로운 형식의 문제에서 발생할 수 있습니다.</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Right Column - Solutions -->
+            <div class="w-7/12">
+                <div class="grid grid-cols-2 gap-4">
+                    <!-- Solution 1 -->
+                    <div class="bg-gray-800 bg-opacity-60 p-5 rounded-xl border border-gray-700 solution-card card-hover">
+                        <div class="flex items-center mb-3">
+                            <div class="w-10 h-10 rounded-full bg-green-900 bg-opacity-50 flex items-center justify-center mr-3">
+                                <i class="fas fa-redo-alt text-green-400 text-lg"></i>
+                            </div>
+                            <h3 class="text-lg font-semibold text-green-300">재인증 및 재설치</h3>
+                        </div>
+                        <p class="text-gray-300 text-sm mb-3">
+                            백준허브 설정에서 로그아웃 후 재인증하거나, 필요한 경우 확장 프로그램을 재설치해보세요.
+                        </p>
+                        <div class="bg-gray-900 p-3 rounded-md text-xs space-y-2">
+                            <div class="flex items-start">
+                                <span class="inline-block w-4 h-4 bg-green-800 rounded-full flex-shrink-0 mt-0.5 mr-2"></span>
+                                <span class="text-gray-300">확장 프로그램 관리에서 백준허브 찾기</span>
+                            </div>
+                            <div class="flex items-start">
+                                <span class="inline-block w-4 h-4 bg-green-800 rounded-full flex-shrink-0 mt-0.5 mr-2"></span>
+                                <span class="text-gray-300">GitHub 재인증 또는 완전히 제거 후 재설치</span>
+                            </div>
+                            <div class="flex items-start">
+                                <span class="inline-block w-4 h-4 bg-green-800 rounded-full flex-shrink-0 mt-0.5 mr-2"></span>
+                                <span class="text-gray-300">새 리포지토리 연결하여 테스트</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Solution 2 -->
+                    <div class="bg-gray-800 bg-opacity-60 p-5 rounded-xl border border-gray-700 solution-card card-hover">
+                        <div class="flex items-center mb-3">
+                            <div class="w-10 h-10 rounded-full bg-blue-900 bg-opacity-50 flex items-center justify-center mr-3">
+                                <i class="fas fa-link text-blue-400 text-lg"></i>
+                            </div>
+                            <h3 class="text-lg font-semibold text-blue-300">solved.ac 연동 확인</h3>
+                        </div>
+                        <p class="text-gray-300 text-sm mb-3">
+                            백준 계정 설정에서 solved.ac 연동이 활성화되어 있는지 확인하고, 문제 유형 표시를 설정해주세요.
+                        </p>
+                        <div class="bg-gray-900 p-3 rounded-md text-xs space-y-2">
+                            <div class="flex items-start">
+                                <span class="inline-block w-4 h-4 bg-blue-800 rounded-full flex-shrink-0 mt-0.5 mr-2"></span>
+                                <span class="text-gray-300">백준 > 설정 > solved.ac 탭 확인</span>
+                            </div>
+                            <div class="flex items-start">
+                                <span class="inline-block w-4 h-4 bg-blue-800 rounded-full flex-shrink-0 mt-0.5 mr-2"></span>
+                                <span class="text-gray-300">사용하기 옵션 활성화</span>
+                            </div>
+                            <div class="flex items-start">
+                                <span class="inline-block w-4 h-4 bg-blue-800 rounded-full flex-shrink-0 mt-0.5 mr-2"></span>
+                                <span class="text-gray-300">보기 옵션에서 티어와 알고리즘 분류 표시</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Solution 3 -->
+                    <div class="bg-gray-800 bg-opacity-60 p-5 rounded-xl border border-gray-700 solution-card card-hover">
+                        <div class="flex items-center mb-3">
+                            <div class="w-10 h-10 rounded-full bg-yellow-900 bg-opacity-50 flex items-center justify-center mr-3">
+                                <i class="fas fa-code-branch text-yellow-400 text-lg"></i>
+                            </div>
+                            <h3 class="text-lg font-semibold text-yellow-300">충돌 해결 전략</h3>
+                        </div>
+                        <p class="text-gray-300 text-sm mb-3">
+                            Git 충돌 발생 시, 수동으로 충돌을 해결하거나 백업 후 리포지토리를 재구성할 수 있습니다.
+                        </p>
+                        <div class="bg-gray-900 p-3 rounded-md text-xs space-y-2">
+                            <div class="flex items-start">
+                                <span class="inline-block w-4 h-4 bg-yellow-800 rounded-full flex-shrink-0 mt-0.5 mr-2"></span>
+                                <span class="text-gray-300">GitHub Desktop으로 충돌 파일 확인</span>
+                            </div>
+                            <div class="flex items-start">
+                                <span class="inline-block w-4 h-4 bg-yellow-800 rounded-full flex-shrink-0 mt-0.5 mr-2"></span>
+                                <span class="text-gray-300">코드 에디터로 충돌 부분 수정</span>
+                            </div>
+                            <div class="flex items-start">
+                                <span class="inline-block w-4 h-4 bg-yellow-800 rounded-full flex-shrink-0 mt-0.5 mr-2"></span>
+                                <span class="text-gray-300">변경사항 커밋 또는 강제 푸시 (주의 필요)</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Solution 4 -->
+                    <div class="bg-gray-800 bg-opacity-60 p-5 rounded-xl border border-gray-700 solution-card card-hover">
+                        <div class="flex items-center mb-3">
+                            <div class="w-10 h-10 rounded-full bg-purple-900 bg-opacity-50 flex items-center justify-center mr-3">
+                                <i class="fas fa-cloud-upload-alt text-purple-400 text-lg"></i>
+                            </div>
+                            <h3 class="text-lg font-semibold text-purple-300">설정 백업 관리</h3>
+                        </div>
+                        <p class="text-gray-300 text-sm mb-3">
+                            백준허브 설정을 주기적으로 백업하고, 커스텀 설정을 문서화하여 필요 시 빠르게 복구할 수 있게 합니다.
+                        </p>
+                        <div class="bg-gray-900 p-3 rounded-md text-xs space-y-2">
+                            <div class="flex items-start">
+                                <span class="inline-block w-4 h-4 bg-purple-800 rounded-full flex-shrink-0 mt-0.5 mr-2"></span>
+                                <span class="text-gray-300">커스텀 설정과 템플릿 내용 기록</span>
+                            </div>
+                            <div class="flex items-start">
+                                <span class="inline-block w-4 h-4 bg-purple-800 rounded-full flex-shrink-0 mt-0.5 mr-2"></span>
+                                <span class="text-gray-300">브라우저 데이터 삭제 시 확장 프로그램 제외</span>
+                            </div>
+                            <div class="flex items-start">
+                                <span class="inline-block w-4 h-4 bg-purple-800 rounded-full flex-shrink-0 mt-0.5 mr-2"></span>
+                                <span class="text-gray-300">GitHub 액세스 토큰 안전하게 관리</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Additional Resources -->
+                <div class="mt-6 bg-gray-800 bg-opacity-60 p-5 rounded-xl border border-blue-900 pulse-animation">
+                    <h3 class="text-lg font-semibold text-blue-300 mb-3 flex items-center">
+                        <i class="fas fa-info-circle mr-2 text-blue-400"></i>
+                        추가 문제 해결 자료
+                    </h3>
+                    <div class="grid grid-cols-2 gap-4 text-sm">
+                        <div class="flex items-start">
+                            <i class="fab fa-github text-gray-400 mr-2 mt-1"></i>
+                            <a href="https://github.com/BaekjoonHub/BaekjoonHub/issues" class="text-blue-300 hover:underline">백준허브 GitHub 이슈 페이지</a>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-book text-gray-400 mr-2 mt-1"></i>
+                            <a href="#" class="text-blue-300 hover:underline">백준허브 공식 문서</a>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-users text-gray-400 mr-2 mt-1"></i>
+                            <a href="#" class="text-blue-300 hover:underline">백준허브 커뮤니티 포럼</a>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-question-circle text-gray-400 mr-2 mt-1"></i>
+                            <a href="#" class="text-blue-300 hover:underline">자주 묻는 질문 (FAQ)</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Pro tip -->
+        <div class="mt-auto py-3 px-5 bg-gray-800 bg-opacity-50 rounded-lg inline-block self-start">
+            <p class="text-gray-300 flex items-center text-sm">
+                <i class="fas fa-lightbulb text-yellow-400 mr-2"></i>
+                <strong>Pro Tip:</strong>&nbsp;
+                <span class="text-gray-400">새 브라우저나 기기에서 백준허브를 설정하기 전 이전 환경에서 로그아웃하면 인증 충돌을 방지할 수 있습니다.</span>
+            </p>
+        </div>
+        
+        <!-- Page number -->
+        <div class="absolute bottom-6 right-8 text-gray-500">
+            14 / 25
+        </div>
+    </div>
+</body>
+</html>

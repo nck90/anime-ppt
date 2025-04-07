@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Git, GitHub 및 백준허브 연동 코테 세팅</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --github-dark: #0d1117;
+            --github-dark-secondary: #161b22;
+            --github-blue: #0366d6;
+            --github-blue-light: #58a6ff;
+            --github-text: #c9d1d9;
+            --github-border: #30363d;
+        }
+        
+        body {
+            font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
+            background-color: var(--github-dark);
+            color: var(--github-text);
+            margin: 0;
+            padding: 0;
+        }
+        
+        .slide-container {
+            width: 1280px;
+            min-height: 720px;
+            margin: 0 auto;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .portfolio-item {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.6s forwards;
+        }
+        
+        .portfolio-item:nth-child(1) { animation-delay: 0.2s; }
+        .portfolio-item:nth-child(2) { animation-delay: 0.4s; }
+        .portfolio-item:nth-child(3) { animation-delay: 0.6s; }
+        
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .portfolio-visual {
+            opacity: 0;
+            transform: translateX(30px);
+            animation: slideIn 0.8s forwards 0.7s;
+        }
+        
+        @keyframes slideIn {
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        .github-contribution {
+            display: grid;
+            grid-template-columns: repeat(52, 1fr);
+            grid-template-rows: repeat(7, 1fr);
+            gap: 3px;
+        }
+        
+        .contribution-day {
+            width: 10px;
+            height: 10px;
+            border-radius: 2px;
+            animation: fadeIn 1.2s forwards;
+            opacity: 0;
+        }
+        
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+        
+        .hexagon {
+            position: absolute;
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+            z-index: -1;
+        }
+        
+        .tag {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .timeline-item {
+            position: relative;
+            padding-left: 20px;
+        }
+        
+        .timeline-item::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 8px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: var(--github-blue-light);
+        }
+        
+        .timeline-item:not(:last-child)::after {
+            content: "";
+            position: absolute;
+            left: 5px;
+            top: 20px;
+            width: 2px;
+            height: calc(100% - 8px);
+            background-color: rgba(88, 166, 255, 0.4);
+        }
+    </style>
+</head>
+<body class="overflow-hidden">
+    <div class="slide-container flex flex-col p-16 relative bg-gradient-to-br from-gray-900 to-black">
+        <!-- Background elements -->
+        <div class="hexagon bg-blue-900 opacity-5" style="width: 500px; height: 500px; top: -150px; right: -100px;"></div>
+        <div class="hexagon bg-indigo-800 opacity-5" style="width: 400px; height: 400px; bottom: -150px; left: -100px;"></div>
+        
+        <!-- Grid pattern -->
+        <div class="absolute inset-0"
+             style="background-image: linear-gradient(var(--github-blue-light) 1px, transparent 1px), linear-gradient(90deg, var(--github-blue-light) 1px, transparent 1px); 
+                    background-size: 40px 40px; background-position: -1px -1px;
+                    opacity: 0.03;">
+        </div>
+        
+        <!-- Title Section -->
+        <div class="mb-8">
+            <h2 class="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-indigo-500">코딩 포트폴리오 구축하기</h2>
+            <div class="h-1 w-32 bg-blue-500 mt-2"></div>
+            <p class="text-gray-400 mt-2">GitHub와 백준허브를 활용한 효과적인 개발자 포트폴리오 만들기</p>
+        </div>
+        
+        <div class="flex gap-8">
+            <!-- Left Column - Portfolio Building Tips -->
+            <div class="w-5/12">
+                <div class="space-y-6">
+                    <!-- Portfolio Tip 1 -->
+                    <div class="bg-gray-800 bg-opacity-50 p-5 rounded-lg border-l-4 border-blue-500 portfolio-item hover:bg-opacity-70 transition-all duration-300">
+                        <h3 class="text-xl font-semibold text-blue-300 mb-3">체계적인 문제 해결 기록</h3>
+                        <p class="text-gray-300 mb-3">
+                            백준허브를 통해 자동으로 생성된 GitHub 리포지토리는 알고리즘 풀이 역량을 보여주는 훌륭한 포트폴리오가 됩니다.
+                        </p>
+                        <div class="space-y-2 text-sm">
+                            <div class="timeline-item pl-6 pb-2">
+                                <span class="text-white">README.md 보강</span>
+                                <p class="text-gray-400 text-xs">각 문제의 README에 문제 해결 접근법과 학습 포인트 추가</p>
+                            </div>
+                            <div class="timeline-item pl-6 pb-2">
+                                <span class="text-white">커스텀 디렉토리 구조</span>
+                                <p class="text-gray-400 text-xs">알고리즘 유형별, 난이도별 구분으로 학습 체계 보여주기</p>
+                            </div>
+                            <div class="timeline-item pl-6">
+                                <span class="text-white">시간/공간 복잡도 분석</span>
+                                <p class="text-gray-400 text-xs">각 풀이의 성능 분석 정보를 주석으로 추가</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Portfolio Tip 2 -->
+                    <div class="bg-gray-800 bg-opacity-50 p-5 rounded-lg border-l-4 border-green-500 portfolio-item hover:bg-opacity-70 transition-all duration-300">
+                        <h3 class="text-xl font-semibold text-green-300 mb-3">일관된 커밋 기록 관리</h3>
+                        <p class="text-gray-300 mb-3">
+                            꾸준한 문제 풀이 활동과 의미 있는 커밋 메시지는 지속적인 학습 의지와 성장을 보여줍니다.
+                        </p>
+                        <div class="bg-gray-900 p-3 rounded-md border border-gray-700">
+                            <div class="text-sm text-white mb-2">효과적인 커밋 메시지 템플릿:</div>
+                            <div class="text-xs text-gray-400 space-y-1">
+                                <div>✅ [알고리즘] 문제이름 - 핵심 접근법</div>
+                                <div>💡 [자료구조] 문제이름 - 최적화 포인트</div>
+                                <div>🔄 [리팩토링] 문제이름 - 개선사항</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Portfolio Tip 3 -->
+                    <div class="bg-gray-800 bg-opacity-50 p-5 rounded-lg border-l-4 border-purple-500 portfolio-item hover:bg-opacity-70 transition-all duration-300">
+                        <h3 class="text-xl font-semibold text-purple-300 mb-3">프로젝트 연계 및 확장</h3>
+                        <p class="text-gray-300 mb-3">
+                            알고리즘 지식을 실제 프로젝트에 적용하거나, 학습 과정을 블로그로 정리하여 종합적인 포트폴리오를 구축하세요.
+                        </p>
+                        <div class="flex flex-wrap mt-3 gap-2">
+                            <div class="tag bg-indigo-900 text-indigo-200">
+                                <i class="fas fa-project-diagram mr-1"></i> 알고리즘 시각화
+                            </div>
+                            <div class="tag bg-blue-900 text-blue-200">
+                                <i class="fas fa-blog mr-1"></i> 풀이 과정 블로그
+                            </div>
+                            <div class="tag bg-green-900 text-green-200">
+                                <i class="fas fa-chart-line mr-1"></i> 진척도 대시보드
+                            </div>
+                            <div class="tag bg-red-900 text-red-200">
+                                <i class="fas fa-users mr-1"></i> 스터디 그룹 연계
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Right Column - Visual Representation -->
+            <div class="w-7/12 portfolio-visual">
+                <div class="bg-gray-800 bg-opacity-60 p-6 rounded-xl border border-gray-700 h-full">
+                    <h3 class="text-2xl font-semibold text-blue-300 mb-5">포트폴리오로서의 GitHub 프로필</h3>
+                    
+                    <!-- GitHub Profile Preview -->
+                    <div class="bg-gray-900 rounded-lg border border-gray-700 overflow-hidden mb-5">
+                        <!-- Profile Header -->
+                        <div class="bg-gray-800 p-4 border-b border-gray-700 flex items-center">
+                            <div class="w-12 h-12 bg-gray-700 rounded-full mr-4"></div>
+                            <div>
+                                <div class="text-lg font-medium text-white">개발자 홍길동</div>
+                                <div class="text-sm text-gray-400">@devhong</div>
+                            </div>
+                            <div class="ml-auto">
+                                <button class="bg-blue-600 hover:bg-blue-500 text-white px-3 py-1 text-sm rounded">
+                                    Follow
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- Profile Content -->
+                        <div class="p-5">
+                            <!-- Bio section -->
+                            <div class="mb-5">
+                                <p class="text-gray-300 text-sm">
+                                    백엔드 개발자 | 알고리즘 & 자료구조 열공 중 | 100+ 문제 해결
+                                </p>
+                            </div>
+                            
+                            <!-- Contribution graph -->
+                            <div class="mb-5">
+                                <h4 class="text-white text-sm font-medium mb-2">1년간의 기여 활동</h4>
+                                <div class="overflow-x-auto">
+                                    <div class="github-contribution p-2 bg-gray-800 rounded-md" style="width: fit-content; min-width: 100%;">
+                                        <!-- This is a simplified version of GitHub's contribution graph -->
+                                        <!-- We'll dynamically generate cells with various colors to simulate coding activity -->
+                                        <script>
+                                            document.addEventListener('DOMContentLoaded', function() {
+                                                const container = document.querySelector('.github-contribution');
+                                                const colors = [
+                                                    'bg-gray-700', // No contributions
+                                                    'bg-green-900', // Few contributions
+                                                    'bg-green-700', // Medium contributions
+                                                    'bg-green-600', // More contributions
+                                                    'bg-green-500'  // Many contributions
+                                                ];
+                                                
+                                                // Create 364 cells (52 weeks * 7 days)
+                                                for (let i = 0; i < 364; i++) {
+                                                    const intensity = Math.floor(Math.random() * 5); // Random intensity
+                                                    const cell = document.createElement('div');
+                                                    cell.className = `contribution-day ${colors[intensity]}`;
+                                                    cell.style.animationDelay = `${1.2 + (i * 0.005)}s`;
+                                                    container.appendChild(cell);
+                                                }
+                                            });
+                                        </script>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Popular repositories -->
+                            <div>
+                                <h4 class="text-white text-sm font-medium mb-3">인기 리포지토리</h4>
+                                <div class="grid grid-cols-2 gap-3">
+                                    <!-- Repository 1: Algorithm Solutions -->
+                                    <div class="bg-gray-800 p-3 rounded-md border border-gray-700">
+                                        <div class="flex items-center mb-2">
+                                            <i class="fas fa-code text-blue-400 mr-2"></i>
+                                            <a href="#" class="text-blue-400 font-medium hover:underline">Algorithm-Solutions</a>
+                                        </div>
+                                        <p class="text-gray-400 text-xs mb-2">백준, 프로그래머스 알고리즘 문제 풀이 모음</p>
+                                        <div class="flex items-center text-xs text-gray-500">
+                                            <div class="flex items-center mr-3">
+                                                <span class="w-2 h-2 bg-yellow-500 rounded-full mr-1"></span>
+                                                <span>JavaScript</span>
+                                            </div>
+                                            <div class="flex items-center mr-3">
+                                                <i class="far fa-star mr-1"></i>
+                                                <span>15</span>
+                                            </div>
+                                            <div class="flex items-center">
+                                                <i class="fas fa-code-branch mr-1"></i>
+                                                <span>5</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Repository 2: Data Structures -->
+                                    <div class="bg-gray-800 p-3 rounded-md border border-gray-700">
+                                        <div class="flex items-center mb-2">
+                                            <i class="fas fa-project-diagram text-green-400 mr-2"></i>
+                                            <a href="#" class="text-blue-400 font-medium hover:underline">Data-Structures</a>
+                                        </div>
+                                        <p class="text-gray-400 text-xs mb-2">다양한 자료구조 구현 및 활용 예제</p>
+                                        <div class="flex items-center text-xs text-gray-500">
+                                            <div class="flex items-center mr-3">
+                                                <span class="w-2 h-2 bg-blue-500 rounded-full mr-1"></span>
+                                                <span>Python</span>
+                                            </div>
+                                            <div class="flex items-center mr-3">
+                                                <i class="far fa-star mr-1"></i>
+                                                <span>8</span>
+                                            </div>
+                                            <div class="flex items-center">
+                                                <i class="fas fa-code-branch mr-1"></i>
+                                                <span>2</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Portfolio Impact -->
+                    <div class="bg-gray-900 p-4 rounded-lg border border-blue-900">
+                        <h4 class="text-blue-300 font-medium mb-3 flex items-center">
+                            <i class="fas fa-chart-line mr-2"></i>
+                            알고리즘 포트폴리오의 채용 효과
+                        </h4>
+                        <div class="grid grid-cols-3 gap-4 text-center">
+                            <div class="bg-gray-800 p-3 rounded-lg">
+                                <div class="text-blue-400 text-2xl font-bold mb-1">85%</div>
+                                <div class="text-xs text-gray-400">기술 면접 준비도<br>향상</div>
+                            </div>
+                            <div class="bg-gray-800 p-3 rounded-lg">
+                                <div class="text-green-400 text-2xl font-bold mb-1">3.2x</div>
+                                <div class="text-xs text-gray-400">면접 기회<br>증가</div>
+                            </div>
+                            <div class="bg-gray-800 p-3 rounded-lg">
+                                <div class="text-purple-400 text-2xl font-bold mb-1">73%</div>
+                                <div class="text-xs text-gray-400">코딩 테스트<br>합격률</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Pro tip -->
+        <div class="mt-auto py-3 px-5 bg-gray-800 bg-opacity-50 rounded-lg inline-block self-start">
+            <p class="text-gray-300 flex items-center text-sm">
+                <i class="fas fa-lightbulb text-yellow-400 mr-2"></i>
+                <strong>Pro Tip:</strong>&nbsp;
+                <span class="text-gray-400">리포지토리에 핀(Pin) 기능을 활용하여 가장 인상적인 알고리즘 문제 풀이를 GitHub 프로필 상단에 고정하세요.</span>
+            </p>
+        </div>
+        
+        <!-- Page number -->
+        <div class="absolute bottom-6 right-8 text-gray-500">
+            15 / 25
+        </div>
+    </div>
+</body>
+</html>

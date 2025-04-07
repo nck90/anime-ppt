@@ -1,0 +1,12 @@
+{
+  "name": "presentation-server",
+  "version": "1.0.0",
+  "description": "Presentation server for slides",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+} 

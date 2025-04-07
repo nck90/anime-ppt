@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Git, GitHub 및 백준허브 연동 코테 세팅</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --github-dark: #0d1117;
+            --github-dark-secondary: #161b22;
+            --github-blue: #0366d6;
+            --github-blue-light: #58a6ff;
+            --github-text: #c9d1d9;
+            --github-border: #30363d;
+        }
+        
+        body {
+            font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
+            background-color: var(--github-dark);
+            color: var(--github-text);
+            margin: 0;
+            padding: 0;
+        }
+        
+        .slide-container {
+            width: 1280px;
+            min-height: 720px;
+            margin: 0 auto;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .interview-item {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.6s forwards;
+        }
+        
+        .interview-item:nth-child(1) { animation-delay: 0.2s; }
+        .interview-item:nth-child(2) { animation-delay: 0.4s; }
+        .interview-item:nth-child(3) { animation-delay: 0.6s; }
+        .interview-item:nth-child(4) { animation-delay: 0.8s; }
+        
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .interview-visual {
+            opacity: 0;
+            transform: translateX(30px);
+            animation: slideIn 0.8s forwards 0.7s;
+        }
+        
+        @keyframes slideIn {
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        .hexagon {
+            position: absolute;
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+            z-index: -1;
+        }
+        
+        .code-block {
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(8, 83, 156, 0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .tag {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+    </style>
+</head>
+<body class="overflow-hidden">
+    <div class="slide-container flex flex-col p-16 relative bg-gradient-to-br from-gray-900 to-black">
+        <!-- Background elements -->
+        <div class="hexagon bg-blue-900 opacity-5" style="width: 500px; height: 500px; top: -150px; right: -100px;"></div>
+        <div class="hexagon bg-indigo-800 opacity-5" style="width: 400px; height: 400px; bottom: -150px; left: -100px;"></div>
+        
+        <!-- Grid pattern -->
+        <div class="absolute inset-0"
+             style="background-image: linear-gradient(var(--github-blue-light) 1px, transparent 1px), linear-gradient(90deg, var(--github-blue-light) 1px, transparent 1px); 
+                    background-size: 40px 40px; background-position: -1px -1px;
+                    opacity: 0.03;">
+        </div>
+        
+        <!-- Title Section -->
+        <div class="mb-8">
+            <h2 class="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-indigo-500">Git & GitHub 기술 면접 준비</h2>
+            <div class="h-1 w-32 bg-blue-500 mt-2"></div>
+            <p class="text-gray-400 mt-2">기술 면접에서 자주 등장하는 Git 관련 질문과 효과적인 대응 전략</p>
+        </div>
+        
+        <div class="flex gap-8">
+            <!-- Left Column - Interview Questions -->
+            <div class="w-5/12">
+                <div class="space-y-5">
+                    <!-- Question 1 -->
+                    <div class="bg-gray-800 bg-opacity-50 p-5 rounded-lg border-l-4 border-blue-500 interview-item hover:bg-opacity-70 transition-all duration-300 card-hover">
+                        <h3 class="text-xl font-semibold text-blue-300 mb-3">Git과 GitHub의 차이점은?</h3>
+                        <p class="text-gray-300 mb-3">
+                            면접에서 기본적으로 물어보는 질문으로, Git과 GitHub의 개념적 차이를 명확하게 설명할 수 있어야 합니다.
+                        </p>
+                        <div class="bg-gray-900 p-3 rounded-md border border-gray-700">
+                            <div class="text-sm text-gray-300">
+                                <span class="text-blue-400 font-medium">모범 답변:</span> Git은 분산 버전 관리 시스템으로 로컬에서 코드 변경 사항을 추적하는 도구이며, GitHub는 Git 저장소를 호스팅하는 클라우드 기반 서비스로 협업 기능을 제공합니다.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Question 2 -->
+                    <div class="bg-gray-800 bg-opacity-50 p-5 rounded-lg border-l-4 border-green-500 interview-item hover:bg-opacity-70 transition-all duration-300 card-hover">
+                        <h3 class="text-xl font-semibold text-green-300 mb-3">Git 브랜치 전략을 설명해주세요</h3>
+                        <p class="text-gray-300 mb-3">
+                            실무 경험을 확인하는 질문으로, 브랜치 전략에 대한 이해와 실제 적용 경험을 보여주세요.
+                        </p>
+                        <div class="bg-gray-900 p-3 rounded-md border border-gray-700">
+                            <div class="text-sm text-gray-300">
+                                <span class="text-green-400 font-medium">모범 답변:</span> Git Flow와 GitHub Flow 두 가지 주요 전략이 있습니다. 복잡한 프로젝트에는 master, develop, feature, release, hotfix 브랜치를 활용하는 Git Flow가 적합하고, 지속적 배포에는 단순한 GitHub Flow가 효과적입니다.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Question 3 -->
+                    <div class="bg-gray-800 bg-opacity-50 p-5 rounded-lg border-l-4 border-purple-500 interview-item hover:bg-opacity-70 transition-all duration-300 card-hover">
+                        <h3 class="text-xl font-semibold text-purple-300 mb-3">Rebase와 Merge의 차이점은?</h3>
+                        <p class="text-gray-300 mb-3">
+                            Git의 고급 기능에 대한 이해도를 확인하는 질문으로, 각각의 장단점과 적절한 사용 상황을 설명하세요.
+                        </p>
+                        <div class="bg-gray-900 p-3 rounded-md border border-gray-700">
+                            <div class="text-sm text-gray-300">
+                                <span class="text-purple-400 font-medium">모범 답변:</span> Merge는 브랜치의 변경사항을 통합하여 병합 커밋을 생성하며 이력이 보존됩니다. Rebase는 커밋을 재배치하여 선형적인 이력을 만들어 깔끔한 히스토리를 제공하지만, 공개 브랜치에서는 사용을 주의해야 합니다.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Question 4 -->
+                    <div class="bg-gray-800 bg-opacity-50 p-5 rounded-lg border-l-4 border-yellow-500 interview-item hover:bg-opacity-70 transition-all duration-300 card-hover">
+                        <h3 class="text-xl font-semibold text-yellow-300 mb-3">Git에서 충돌을 해결한 경험이 있나요?</h3>
+                        <p class="text-gray-300 mb-3">
+                            실무 경험과 문제 해결 능력을 평가하는 질문으로, 구체적인 사례와 해결 방법을 공유하세요.
+                        </p>
+                        <div class="bg-gray-900 p-3 rounded-md border border-gray-700">
+                            <div class="text-sm text-gray-300">
+                                <span class="text-yellow-400 font-medium">모범 답변:</span> 팀 프로젝트에서 동일 파일을 수정하여 충돌이 발생했습니다. git status로 충돌 파일을 확인하고, 코드 에디터에서 충돌 마커(<<<<<<<, =======, >>>>>>>)를 찾아 양쪽 변경사항을 검토한 후 의도에 맞게 통합했습니다.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Right Column - Interview Tips and Visuals -->
+            <div class="w-7/12 interview-visual">
+                <div class="bg-gray-800 bg-opacity-60 p-6 rounded-xl border border-gray-700 h-full">
+                    <h3 class="text-2xl font-semibold text-blue-300 mb-5">GitHub 포트폴리오로 면접 준비하기</h3>
+                    
+                    <!-- GitHub Portfolio Tips -->
+                    <div class="grid grid-cols-2 gap-4 mb-5">
+                        <!-- Tip 1 -->
+                        <div class="bg-gray-900 p-4 rounded-lg border border-gray-700 card-hover">
+                            <div class="flex items-center mb-3">
+                                <div class="w-10 h-10 rounded-full bg-blue-900 bg-opacity-40 flex items-center justify-center mr-3">
+                                    <i class="fas fa-code-branch text-blue-400 text-xl"></i>
+                                </div>
+                                <h4 class="text-lg font-medium text-blue-300">백준허브 활용 코드 리포지토리</h4>
+                            </div>
+                            <p class="text-sm text-gray-300">
+                                백준허브로 자동 커밋된 코딩 테스트 풀이 리포지토리를 면접 중 포트폴리오로 보여주세요. 다양한 알고리즘 문제 해결 능력을 증명할 수 있습니다.
+                            </p>
+                            <div class="mt-2 text-xs text-gray-400">
+                                <i class="fas fa-lightbulb text-yellow-400 mr-1"></i>
+                                <span>풀이 과정과 시간/공간 복잡도 분석을 주석으로 추가하면 더 효과적</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Tip 2 -->
+                        <div class="bg-gray-900 p-4 rounded-lg border border-gray-700 card-hover">
+                            <div class="flex items-center mb-3">
+                                <div class="w-10 h-10 rounded-full bg-green-900 bg-opacity-40 flex items-center justify-center mr-3">
+                                    <i class="fas fa-book text-green-400 text-xl"></i>
+                                </div>
+                                <h4 class="text-lg font-medium text-green-300">프로필 README 최적화</h4>
+                            </div>
+                            <p class="text-sm text-gray-300">
+                                GitHub 프로필 README를 통해 Git 및 GitHub 활용 능력을 부각시키세요. 주요 프로젝트, 기술 스택, 기여 그래프를 효과적으로 전시합니다.
+                            </p>
+                            <div class="mt-2 text-xs text-gray-400">
+                                <i class="fas fa-lightbulb text-yellow-400 mr-1"></i>
+                                <span>GitHub Actions로 자동 업데이트되는 통계 뱃지 추가</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Code Example Section -->
+                    <div class="bg-gray-900 rounded-lg border border-gray-700 mb-5">
+                        <div class="bg-gray-800 p-3 border-b border-gray-700">
+                            <div class="flex items-center">
+                                <i class="fas fa-terminal text-green-400 mr-2"></i>
+                                <h4 class="text-lg font-medium text-white">면접에서 유용한 Git 명령어 시연</h4>
+                            </div>
+                        </div>
+                        <div class="p-4">
+                            <div class="grid grid-cols-2 gap-4">
+                                <div class="bg-gray-800 p-3 rounded-md">
+                                    <div class="text-sm text-blue-300 mb-2 font-medium">Git 기록 확인</div>
+                                    <pre class="code-block text-xs text-gray-300 overflow-x-auto"><code># 로그를 그래프로 시각화하여 보여주기
+git log --graph --oneline --all --decorate
+
+# 특정 파일의 변경 이력 살펴보기
+git log -p [파일명]
+
+# 누가 코드를 작성했는지 확인하기
+git blame [파일명]</code></pre>
+                                </div>
+                                <div class="bg-gray-800 p-3 rounded-md">
+                                    <div class="text-sm text-green-300 mb-2 font-medium">고급 브랜치 관리</div>
+                                    <pre class="code-block text-xs text-gray-300 overflow-x-auto"><code># 특정 커밋만 다른 브랜치에 적용하기
+git cherry-pick [커밋해시]
+
+# 작업 중인 변경사항 임시 저장하기
+git stash
+git stash pop
+
+# 브랜치 리베이스 후 스쿼시하기
+git rebase -i HEAD~3</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Interview Scenario -->
+                    <div class="bg-gray-900 p-4 rounded-lg border border-blue-900">
+                        <h4 class="text-lg font-medium text-blue-300 mb-3 flex items-center">
+                            <i class="fas fa-users text-blue-400 mr-2"></i>
+                            실전 면접 시나리오
+                        </h4>
+                        <div class="bg-gray-800 p-3 rounded-md mb-3">
+                            <div class="flex items-start mb-2">
+                                <div class="w-8 h-8 bg-gray-700 rounded-full flex items-center justify-center mr-3 flex-shrink-0">
+                                    <i class="fas fa-user text-gray-400"></i>
+                                </div>
+                                <div>
+                                    <div class="text-white text-sm font-medium">면접관</div>
+                                    <p class="text-gray-300 text-sm">팀에서 Git으로 협업할 때 다른 개발자가 작성한 코드와 충돌이 발생했다면 어떻게 해결하시겠습니까?</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <div class="w-8 h-8 bg-blue-900 bg-opacity-40 rounded-full flex items-center justify-center mr-3 flex-shrink-0">
+                                    <i class="fas fa-user text-blue-400"></i>
+                                </div>
+                                <div>
+                                    <div class="text-white text-sm font-medium">지원자 (모범 답변)</div>
+                                    <p class="text-gray-300 text-sm">먼저 git pull로 최신 변경사항을 가져온 후, 충돌이 발생한 파일을 확인합니다. 충돌 부분을 검토하고 필요하다면 해당 코드를 작성한 팀원과 직접 소통하여 의도를 확인합니다. 충돌을 해결한 후에는 코드가 정상 작동하는지 테스트하고, 그 다음 변경사항을 커밋합니다. 충돌이 자주 발생한다면 브랜치 전략을 재검토하거나 더 작은 단위로 자주 커밋하는 방식을 팀에 제안할 것입니다.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Pro tip -->
+        <div class="mt-auto py-3 px-5 bg-gray-800 bg-opacity-50 rounded-lg inline-block self-start">
+            <p class="text-gray-300 flex items-center text-sm">
+                <i class="fas fa-lightbulb text-yellow-400 mr-2"></i>
+                <strong>Pro Tip:</strong>&nbsp;
+                <span class="text-gray-400">면접 중 GitHub 프로필을 보여줄 때는 미리 특정 코드나 커밋 이력으로 이동할 수 있도록 북마크를 준비해두면 설명이 더 매끄러워집니다.</span>
+            </p>
+        </div>
+        
+        <!-- Page number -->
+        <div class="absolute bottom-6 right-8 text-gray-500">
+            19 / 25
+        </div>
+    </div>
+</body>
+</html>

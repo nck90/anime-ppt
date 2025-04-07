@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Git, GitHub 및 백준허브 연동 코테 세팅</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --github-dark: #0d1117;
+            --github-dark-secondary: #161b22;
+            --github-blue: #0366d6;
+            --github-blue-light: #58a6ff;
+            --github-text: #c9d1d9;
+            --github-border: #30363d;
+        }
+        
+        body {
+            font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
+            background-color: var(--github-dark);
+            color: var(--github-text);
+            margin: 0;
+            padding: 0;
+        }
+        
+        .slide-container {
+            width: 1280px;
+            min-height: 720px;
+            margin: 0 auto;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .feature-item {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: slideUp 0.5s forwards;
+        }
+        
+        .feature-item:nth-child(1) { animation-delay: 0.2s; }
+        .feature-item:nth-child(2) { animation-delay: 0.4s; }
+        .feature-item:nth-child(3) { animation-delay: 0.6s; }
+        .feature-item:nth-child(4) { animation-delay: 0.8s; }
+        
+        @keyframes slideUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .github-interface {
+            opacity: 0;
+            transform: translateX(40px);
+            animation: slideInLeft 1s ease-out 0.4s forwards;
+        }
+        
+        @keyframes slideInLeft {
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        .github-logo {
+            animation: pulse 3s infinite alternate;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 0.8; }
+            100% { transform: scale(1.05); opacity: 1; }
+        }
+        
+        .hexagon {
+            position: absolute;
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+            z-index: -1;
+        }
+        
+        .tag {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+    </style>
+</head>
+<body class="overflow-hidden">
+    <div class="slide-container flex flex-col p-16 relative bg-gradient-to-br from-gray-900 to-black">
+        <!-- Background elements -->
+        <div class="hexagon bg-blue-900 opacity-5" style="width: 500px; height: 500px; top: -150px; right: -150px;"></div>
+        <div class="hexagon bg-purple-800 opacity-5" style="width: 400px; height: 400px; bottom: -100px; left: -150px;"></div>
+        
+        <!-- Grid pattern -->
+        <div class="absolute inset-0"
+             style="background-image: linear-gradient(var(--github-blue-light) 1px, transparent 1px), linear-gradient(90deg, var(--github-blue-light) 1px, transparent 1px); 
+                    background-size: 40px 40px; background-position: -1px -1px;
+                    opacity: 0.03;">
+        </div>
+        
+        <!-- Title Section -->
+        <div class="mb-8">
+            <h2 class="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500">GitHub 소개</h2>
+            <div class="h-1 w-24 bg-blue-500 mt-2"></div>
+            <p class="text-gray-400 mt-2">코드 호스팅 및 협업을 위한 플랫폼</p>
+        </div>
+        
+        <div class="flex gap-8">
+            <!-- Left Column - GitHub Info -->
+            <div class="w-5/12">
+                <div class="flex items-center mb-6">
+                    <i class="fab fa-github text-6xl text-white mr-5 github-logo"></i>
+                    <div>
+                        <h3 class="text-2xl font-semibold text-white">GitHub란?</h3>
+                        <p class="text-gray-300 mt-1">Git을 기반으로 한 클라우드 호스팅 서비스로, 소프트웨어 개발을 위한 협업 도구입니다.</p>
+                    </div>
+                </div>
+                
+                <div class="space-y-5">
+                    <!-- Feature 1 -->
+                    <div class="bg-gray-800 bg-opacity-50 p-4 rounded-lg border-l-4 border-blue-500 feature-item">
+                        <h4 class="text-xl font-medium text-blue-300">리포지토리 관리</h4>
+                        <p class="text-gray-400 mt-1">Git 저장소를 클라우드에 호스팅하고 관리할 수 있으며, 공개 또는 비공개로 설정 가능합니다.</p>
+                        <div class="mt-2 flex flex-wrap">
+                            <span class="tag bg-blue-900 text-blue-200">코드 호스팅</span>
+                            <span class="tag bg-blue-900 text-blue-200">버전 관리</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Feature 2 -->
+                    <div class="bg-gray-800 bg-opacity-50 p-4 rounded-lg border-l-4 border-green-500 feature-item">
+                        <h4 class="text-xl font-medium text-green-300">협업 도구</h4>
+                        <p class="text-gray-400 mt-1">풀 리퀘스트, 이슈 트래킹, 코드 리뷰 등 다양한 협업 기능을 제공해 팀 작업을 효율적으로 관리합니다.</p>
+                        <div class="mt-2 flex flex-wrap">
+                            <span class="tag bg-green-900 text-green-200">Pull Request</span>
+                            <span class="tag bg-green-900 text-green-200">코드 리뷰</span>
+                            <span class="tag bg-green-900 text-green-200">이슈 관리</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Feature 3 -->
+                    <div class="bg-gray-800 bg-opacity-50 p-4 rounded-lg border-l-4 border-purple-500 feature-item">
+                        <h4 class="text-xl font-medium text-purple-300">소셜 코딩</h4>
+                        <p class="text-gray-400 mt-1">전 세계 개발자와 지식을 공유하고 오픈 소스 프로젝트에 기여할 수 있는 플랫폼입니다.</p>
+                        <div class="mt-2 flex flex-wrap">
+                            <span class="tag bg-purple-900 text-purple-200">오픈 소스</span>
+                            <span class="tag bg-purple-900 text-purple-200">지식 공유</span>
+                            <span class="tag bg-purple-900 text-purple-200">커뮤니티</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Feature 4 -->
+                    <div class="bg-gray-800 bg-opacity-50 p-4 rounded-lg border-l-4 border-yellow-500 feature-item">
+                        <h4 class="text-xl font-medium text-yellow-300">CI/CD 통합</h4>
+                        <p class="text-gray-400 mt-1">GitHub Actions를 통해 지속적 통합 및 배포 파이프라인을 구축하고 자동화할 수 있습니다.</p>
+                        <div class="mt-2 flex flex-wrap">
+                            <span class="tag bg-yellow-900 text-yellow-200">GitHub Actions</span>
+                            <span class="tag bg-yellow-900 text-yellow-200">자동화</span>
+                            <span class="tag bg-yellow-900 text-yellow-200">워크플로우</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Right Column - GitHub Interface -->
+            <div class="w-7/12 github-interface">
+                <div class="bg-gray-800 bg-opacity-60 p-5 rounded-xl border border-gray-700 h-full">
+                    <h3 class="text-2xl font-semibold text-blue-300 mb-4">GitHub 인터페이스</h3>
+                    
+                    <div class="relative rounded-lg overflow-hidden border border-gray-700 shadow-lg">
+                        <div class="bg-gray-900 text-white p-3 flex items-center border-b border-gray-700">
+                            <i class="fab fa-github text-xl mr-3"></i>
+                            <div class="text-sm font-medium">username / repository-name</div>
+                            <div class="ml-auto flex space-x-3">
+                                <div class="flex items-center text-sm">
+                                    <i class="far fa-eye mr-1"></i>
+                                    <span>Watch</span>
+                                </div>
+                                <div class="flex items-center text-sm">
+                                    <i class="far fa-star mr-1"></i>
+                                    <span>Star</span>
+                                </div>
+                                <div class="flex items-center text-sm">
+                                    <i class="fas fa-code-branch mr-1"></i>
+                                    <span>Fork</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Tab Navigation -->
+                        <div class="bg-gray-800 text-white p-2 flex border-b border-gray-700">
+                            <div class="flex items-center px-3 py-2 text-sm font-medium text-blue-400 border-b-2 border-blue-400">
+                                <i class="fas fa-code mr-2"></i>
+                                <span>Code</span>
+                            </div>
+                            <div class="flex items-center px-3 py-2 text-sm text-gray-400">
+                                <i class="fas fa-exclamation-circle mr-2"></i>
+                                <span>Issues</span>
+                            </div>
+                            <div class="flex items-center px-3 py-2 text-sm text-gray-400">
+                                <i class="fas fa-code-branch mr-2"></i>
+                                <span>Pull requests</span>
+                            </div>
+                            <div class="flex items-center px-3 py-2 text-sm text-gray-400">
+                                <i class="fas fa-play mr-2"></i>
+                                <span>Actions</span>
+                            </div>
+                            <div class="flex items-center px-3 py-2 text-sm text-gray-400">
+                                <i class="fas fa-chart-bar mr-2"></i>
+                                <span>Insights</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Repository Content -->
+                        <div class="bg-gray-800 p-4">
+                            <!-- Branch & Code Header -->
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="flex items-center">
+                                    <div class="px-2 py-1 bg-gray-700 rounded-md text-sm flex items-center">
+                                        <i class="fas fa-code-branch mr-2 text-gray-400"></i>
+                                        <span>main</span>
+                                        <i class="fas fa-chevron-down ml-2 text-gray-400"></i>
+                                    </div>
+                                    <div class="ml-3 text-sm text-gray-400">
+                                        <i class="fas fa-code mr-1"></i>
+                                        <span>123 commits</span>
+                                    </div>
+                                </div>
+                                <div class="flex items-center">
+                                    <div class="px-3 py-1 bg-green-700 text-white rounded-md text-sm mr-2">
+                                        <i class="fas fa-code mr-1"></i>
+                                        <span>Code</span>
+                                    </div>
+                                    <div class="px-3 py-1 bg-gray-700 rounded-md text-sm">
+                                        <i class="fas fa-download mr-1"></i>
+                                        <span>Clone</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- File Browser -->
+                            <div class="bg-gray-900 rounded-md border border-gray-700 overflow-hidden">
+                                <div class="bg-gray-800 p-2 border-b border-gray-700 flex items-center justify-between">
+                                    <div class="text-sm text-gray-300">Files</div>
+                                    <div class="text-sm text-gray-400">Last commit: 2 days ago</div>
+                                </div>
+                                
+                                <!-- File List -->
+                                <div class="divide-y divide-gray-700">
+                                    <div class="flex items-center p-3 hover:bg-gray-800">
+                                        <i class="far fa-folder text-blue-400 mr-3"></i>
+                                        <span class="text-blue-300">src</span>
+                                    </div>
+                                    <div class="flex items-center p-3 hover:bg-gray-800">
+                                        <i class="far fa-file-code text-gray-400 mr-3"></i>
+                                        <span>README.md</span>
+                                    </div>
+                                    <div class="flex items-center p-3 hover:bg-gray-800">
+                                        <i class="far fa-file-code text-gray-400 mr-3"></i>
+                                        <span>package.json</span>
+                                    </div>
+                                    <div class="flex items-center p-3 hover:bg-gray-800">
+                                        <i class="far fa-file-code text-gray-400 mr-3"></i>
+                                        <span>.gitignore</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Caption -->
+                    <p class="text-gray-400 text-sm mt-4 text-center">
+                        GitHub의 리포지토리 인터페이스는 직관적이고 사용하기 쉽게 설계되었습니다.
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Pro tip -->
+        <div class="mt-auto py-3 px-5 bg-gray-800 bg-opacity-50 rounded-lg inline-block self-start">
+            <p class="text-gray-300 flex items-center text-sm">
+                <i class="fas fa-lightbulb text-yellow-400 mr-2"></i>
+                <strong>Pro Tip:</strong>&nbsp;
+                <span class="text-gray-400">README.md 파일을 작성하여 프로젝트에 대한 상세 정보를 제공하면 다른 사용자가 프로젝트를 이해하는 데 도움이 됩니다.</span>
+            </p>
+        </div>
+        
+        <!-- Page number -->
+        <div class="absolute bottom-6 right-8 text-gray-500">
+            6 / 25
+        </div>
+    </div>
+</body>
+</html>
